@@ -11,7 +11,7 @@ public class DrProfileDO {
 	private String drContactNum;
 	private String drClinicName;
 	private String drClinicAddress;
-	private int drClinicRating;
+	private float drClinicRating;
 	private String drVerifiedVia;
 
 	private String[] drServices;
@@ -88,11 +88,11 @@ public class DrProfileDO {
 		this.drClinicAddress = drClinicAddress;
 	}
 
-	public int getDrClinicRating() {
+	public float getDrClinicRating() {
 		return drClinicRating;
 	}
 
-	public void setDrClinicRating(int drClinicRating) {
+	public void setDrClinicRating(float drClinicRating) {
 		this.drClinicRating = drClinicRating;
 	}
 

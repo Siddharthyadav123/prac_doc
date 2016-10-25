@@ -84,7 +84,7 @@ public class DrManagementModelForPatient extends BaseModel {
 								.getString(TableConstants.TABLE_USER_COL_DR_CLINIC_ADDRESS));
 
 						drProfileDO.setDrClinicRating(rs
-								.getInt(TableConstants.TABLE_USER_COL_DR_CLINIC_RATING));
+								.getFloat(TableConstants.TABLE_USER_COL_DR_CLINIC_RATING));
 
 						drProfileDO.setDrVerifiedVia(rs
 								.getString(TableConstants.TABLE_USER_COL_DR_VERIFIED_VIA));
