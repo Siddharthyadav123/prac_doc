@@ -1,5 +1,6 @@
 package configuration;
 
+import models.DrManagementModelForPatient;
 import models.UserManagementModel;
 
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,11 @@ public class CoreConfig {
 	@Bean
 	public UserManagementModel getUserManagementModel() {
 		return new UserManagementModel();
+	}
+
+	@Bean
+	public DrManagementModelForPatient getDrManagementModelForPatient() {
+		return new DrManagementModelForPatient();
 	}
 
 }

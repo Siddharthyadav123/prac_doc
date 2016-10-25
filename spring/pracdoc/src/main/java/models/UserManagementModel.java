@@ -40,6 +40,7 @@ public class UserManagementModel extends BaseModel {
 						// userDetailsDO.setPwd(rs.getString("pwd"));
 						userDetailsDO.setFull_name(rs.getString("full_name"));
 						userDetailsDO.setAddress(rs.getString("address"));
+						userDetailsDO.setMobile_no(rs.getString("mobile_no"));
 						return userDetailsDO;
 					}
 
@@ -76,6 +77,7 @@ public class UserManagementModel extends BaseModel {
 									userDetailsDO.getPwd(),
 									userDetailsDO.getFull_name(),
 									userDetailsDO.getAddress(),
+									userDetailsDO.getMobile_no(),
 									getCurrentTimeStamp() });
 
 			userDetailsDO.setId(rowId);
@@ -99,7 +101,8 @@ public class UserManagementModel extends BaseModel {
 			String[] TABLE_USER_PROJECTIONS = {
 					TableConstants.TABLE_USER_COL_PWD,
 					TableConstants.TABLE_USER_COL_FULL_NAME,
-					TableConstants.TABLE_USER_COL_ADDRESS };
+					TableConstants.TABLE_USER_COL_ADDRESS,
+					TableConstants.TABLE_USER_COL_MOBILE_NO };
 
 			String query = formUpdateQueryWithAnd(TableConstants.TABLE_USER,
 					TABLE_USER_PROJECTIONS,
@@ -109,9 +112,12 @@ public class UserManagementModel extends BaseModel {
 			System.out.println(">>sid update user url>> " + query);
 
 			try {
-				int rowId = jdbcTemplate.update(query, new Object[] {
-						userDetailsDO.getPwd(), userDetailsDO.getFull_name(),
-						userDetailsDO.getAddress() });
+				int rowId = jdbcTemplate.update(
+						query,
+						new Object[] { userDetailsDO.getPwd(),
+								userDetailsDO.getFull_name(),
+								userDetailsDO.getAddress(),
+								userDetailsDO.getMobile_no() });
 
 				userDetailsDO.setId(rowId);
 			} catch (Exception e) {

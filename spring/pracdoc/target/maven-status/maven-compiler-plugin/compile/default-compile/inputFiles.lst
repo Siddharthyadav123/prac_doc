@@ -2,9 +2,13 @@ E:\git\prac_doc\spring\pracdoc\src\main\java\models\BaseModel.java
 E:\git\prac_doc\spring\pracdoc\src\main\java\controller\UserManagementController.java
 E:\git\prac_doc\spring\pracdoc\src\main\java\data_objects\BaseResponseModel.java
 E:\git\prac_doc\spring\pracdoc\src\main\java\data_objects\LoginDO.java
-E:\git\prac_doc\spring\pracdoc\src\main\java\models\UserManagementModel.java
+E:\git\prac_doc\spring\pracdoc\src\main\java\controller\DrControllerForPatient.java
 E:\git\prac_doc\spring\pracdoc\src\main\java\data_objects\UserDetailsDO.java
+E:\git\prac_doc\spring\pracdoc\src\main\java\models\DrManagementModelForPatient.java
 E:\git\prac_doc\spring\pracdoc\src\main\java\pracdoc\Application.java
 E:\git\prac_doc\spring\pracdoc\src\main\java\constants\TableConstants.java
+E:\git\prac_doc\spring\pracdoc\src\main\java\data_objects\DrSpecializationDO.java
 E:\git\prac_doc\spring\pracdoc\src\main\java\configuration\CoreConfig.java
+E:\git\prac_doc\spring\pracdoc\src\main\java\data_objects\DrProfileDO.java
 E:\git\prac_doc\spring\pracdoc\src\main\java\controller\BaseController.java
+E:\git\prac_doc\spring\pracdoc\src\main\java\models\UserManagementModel.java

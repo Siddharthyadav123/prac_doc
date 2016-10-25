@@ -19,6 +19,9 @@ public class UserDetailsDO {
 	@JsonProperty("address")
 	public String address;
 
+	@JsonProperty("mobile_no")
+	public String mobile_no;
+
 	public int getId() {
 		return id;
 	}
@@ -59,4 +62,11 @@ public class UserDetailsDO {
 		this.pwd = pwd;
 	}
 
+	public String getMobile_no() {
+		return mobile_no;
+	}
+
+	public void setMobile_no(String mobile_no) {
+		this.mobile_no = mobile_no;
+	}
 }
