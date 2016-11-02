@@ -46,7 +46,7 @@ CREATE TABLE `dr_table` (
   `dr_contact_num` varchar(10) NOT NULL,
   `dr_clinic_name` varchar(255) NOT NULL,
   `dr_clinic_address` varchar(255) NOT NULL,
-  `dr_clinic_rating` int(1) NOT NULL DEFAULT '0',
+  `dr_clinic_rating` float NOT NULL DEFAULT '1',
   `dr_verified_via` varchar(255) DEFAULT NULL,
   `dr_services` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -54,7 +54,7 @@ CREATE TABLE `dr_table` (
 
 /*Data for the table `dr_table` */
 
-insert  into `dr_table`(`id`,`dr_uname`,`dr_pwd`,`dr_full_name`,`dr_specialization`,`dr_qualification`,`dr_experience`,`dr_consulation_fee`,`dr_contact_num`,`dr_clinic_name`,`dr_clinic_address`,`dr_clinic_rating`,`dr_verified_via`,`dr_services`) values (1,'niknilwar','123456','Dr. Nikhalesh Nilawar',1,'BDS, Fellowship in Implantology',17,200,'0959506346','Nilawar Multispeciality dental clinic','1st floor, Sadoday Arcade, WHC Road. Landmark:Opposite Bank of Baroda',5,'Medical License','Cosmetic Veneers, Dental Implant Fixing, Cosmetic/Aesthetic Dentistry');
+insert  into `dr_table`(`id`,`dr_uname`,`dr_pwd`,`dr_full_name`,`dr_specialization`,`dr_qualification`,`dr_experience`,`dr_consulation_fee`,`dr_contact_num`,`dr_clinic_name`,`dr_clinic_address`,`dr_clinic_rating`,`dr_verified_via`,`dr_services`) values (1,'niknilwar','123456','Dr. Nikhalesh Nilawar',1,'BDS, Fellowship in Implantology',17,200,'0959506346','Nilawar Multispeciality dental clinic','1st floor, Sadoday Arcade, WHC Road. Landmark:Opposite Bank of Baroda',4.5,'Medical License','Cosmetic Veneers, Dental Implant Fixing, Cosmetic/Aesthetic Dentistry');
 
 /*Table structure for table `user_table` */
 
@@ -66,16 +66,16 @@ CREATE TABLE `user_table` (
   `pwd` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `full_name` varchar(255) NOT NULL,
-  `mobile_no` decimal(10,0) NOT NULL,
+  `mobile_no` varchar(255) NOT NULL,
   `created_on` datetime NOT NULL,
   `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uname` (`uname`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 /*Data for the table `user_table` */
 
-insert  into `user_table`(`id`,`uname`,`pwd`,`address`,`full_name`,`mobile_no`,`created_on`,`updated_on`) values (1,'siddharth','12345678','ballarpur','siddharth suresh yadav',0,'2016-10-21 16:00:59','2016-10-21 16:00:59');
+insert  into `user_table`(`id`,`uname`,`pwd`,`address`,`full_name`,`mobile_no`,`created_on`,`updated_on`) values (1,'siddharth','12345678','ballarpur','siddharth suresh yadav','9595063464','2016-10-21 16:00:59','2016-10-21 16:00:59'),(10,'ram','1111','ballarpur','ram kumar yadav','9595868633','2016-11-02 15:39:33','2016-11-02 15:58:15');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -1,20 +1,53 @@
 package com.pracdoc.data_objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "dr_table")
 public class DrProfileDO {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column
 	private int id;
+
+	@Column(name = "dr_full_name")
 	private String drFullName;
+
+	@Column(name = "dr_specialization")
 	private int drSpecialization;
+
+	@Column(name = "dr_qualification")
 	private String drQualification;
+
+	@Column(name = "dr_experience")
 	private int drExperience;
+
+	@Column(name = "dr_consulation_fee")
 	private int drConsulationFee;
+
+	@Column(name = "dr_contact_num")
 	private String drContactNum;
+
+	@Column(name = "dr_clinic_name")
 	private String drClinicName;
+
+	@Column(name = "dr_clinic_address")
 	private String drClinicAddress;
+
+	@Column(name = "dr_clinic_rating")
 	private float drClinicRating;
+
+	@Column(name = "dr_verified_via")
 	private String drVerifiedVia;
 
-	private String[] drServices;
+	@Column(name = "dr_services")
+	private String drServices;
 
 	public int getId() {
 		return id;
@@ -104,11 +137,11 @@ public class DrProfileDO {
 		this.drVerifiedVia = drVerifiedVia;
 	}
 
-	public String[] getDrServices() {
+	public String getDrServices() {
 		return drServices;
 	}
 
-	public void setDrServices(String[] drServices) {
+	public void setDrServices(String drServices) {
 		this.drServices = drServices;
 	}
 
