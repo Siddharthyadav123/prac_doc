@@ -3,7 +3,7 @@ package com.pracdoc.dao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.pracdoc.data_objects.BaseResponseModel;
+import com.pracdoc.do_others.BaseResponseModel;
 
 public class BaseDAOImpl {
 

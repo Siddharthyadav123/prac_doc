@@ -1,6 +1,6 @@
 package com.pracdoc.controller;
 
-import com.pracdoc.data_objects.BaseResponseModel;
+import com.pracdoc.do_others.BaseResponseModel;
 
 public class BaseController {
 

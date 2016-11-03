@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pracdoc.dao.IDrManagementDAO;
-import com.pracdoc.data_objects.DrProfileDO;
-import com.pracdoc.data_objects.DrSpecializationDO;
+import com.pracdoc.do_table.DrProfileTableDO;
+import com.pracdoc.do_table.DrSpecializationTableDO;
 
 @Service
 public class DrManagementServiceImpl implements IDrManagmementService {
@@ -16,12 +16,12 @@ public class DrManagementServiceImpl implements IDrManagmementService {
 	private IDrManagementDAO drManagementDAO;
 
 	@Override
-	public List<DrSpecializationDO> getAllDrSpecialiationList() {
+	public List<DrSpecializationTableDO> getAllDrSpecialiationList() {
 		return drManagementDAO.getAllDrSpecialiationList();
 	}
 
 	@Override
-	public List<DrProfileDO> getDrProfileBySpecializationId(int specializationId) {
+	public List<DrProfileTableDO> getDrProfileBySpecializationId(int specializationId) {
 		return drManagementDAO.getDrProfileBySpecializationId(specializationId);
 	}
 

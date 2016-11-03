@@ -1,4 +1,4 @@
-package com.pracdoc.data_objects;
+package com.pracdoc.do_others;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

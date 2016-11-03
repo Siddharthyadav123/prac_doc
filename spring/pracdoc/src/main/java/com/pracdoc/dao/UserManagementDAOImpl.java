@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.pracdoc.constants.TableConstants;
-import com.pracdoc.data_objects.BaseResponseModel;
-import com.pracdoc.data_objects.LoginDO;
-import com.pracdoc.data_objects.UserDetailsDO;
+import com.pracdoc.do_others.BaseResponseModel;
+import com.pracdoc.do_request.LoginRequestDO;
+import com.pracdoc.do_table.DrAppointmentTableDo;
+import com.pracdoc.do_table.UserDetailsTableDO;
 
 @Repository
 public class UserManagementDAOImpl extends BaseDAOImpl implements
@@ -20,9 +21,9 @@ public class UserManagementDAOImpl extends BaseDAOImpl implements
 	private SessionFactory sessionFactory;
 
 	@Override
-	public UserDetailsDO checkLogin(LoginDO login) {
+	public UserDetailsTableDO checkLogin(LoginRequestDO login) {
 
-		UserDetailsDO userDetailsDO = null;
+		UserDetailsTableDO userDetailsDO = null;
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
@@ -32,7 +33,7 @@ public class UserManagementDAOImpl extends BaseDAOImpl implements
 
 			Query query = session.createQuery(qryString);
 
-			userDetailsDO = (UserDetailsDO) query
+			userDetailsDO = (UserDetailsTableDO) query
 					.setString(0, login.getUname())
 					.setString(1, login.getPwd()).uniqueResult();
 
@@ -46,7 +47,7 @@ public class UserManagementDAOImpl extends BaseDAOImpl implements
 	}
 
 	@Override
-	public BaseResponseModel signUpUser(UserDetailsDO userDetailsDO) {
+	public BaseResponseModel signUpUser(UserDetailsTableDO userDetailsDO) {
 		Session session = sessionFactory.openSession();
 
 		Transaction transaction = session.beginTransaction();
@@ -59,7 +60,6 @@ public class UserManagementDAOImpl extends BaseDAOImpl implements
 				userDetailsDO.setId(id);
 				transaction.commit();
 				session.close();
-
 				return getResponseModel(userDetailsDO, true,
 						"User Registered Successfully");
 
@@ -69,17 +69,19 @@ public class UserManagementDAOImpl extends BaseDAOImpl implements
 				return getResponseModel(null, false, e.getMessage());
 			}
 		} else {
+			session.close();
 			return getResponseModel(null, false,
 					"User with this name already Exist.");
 		}
 	}
 
 	@Override
-	public BaseResponseModel updateUser(UserDetailsDO userDetailsDO) {
+	public BaseResponseModel updateUser(UserDetailsTableDO userDetailsDO) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 
-		UserDetailsDO existingUser = findUserByName(userDetailsDO.getUname());
+		UserDetailsTableDO existingUser = findUserByName(userDetailsDO
+				.getUname());
 
 		if (existingUser != null) {
 			try {
@@ -104,21 +106,21 @@ public class UserManagementDAOImpl extends BaseDAOImpl implements
 				return getResponseModel(null, false, e.getMessage());
 			}
 		} else {
+			session.close();
 			return getResponseModel(null, false, "This username doesn't Exist.");
 		}
 	}
 
-	public UserDetailsDO findUserByName(String uname) {
-		UserDetailsDO userDetailsDO = null;
+	public UserDetailsTableDO findUserByName(String uname) {
+		UserDetailsTableDO userDetailsDO = null;
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
 			String qryString = "from " + TableConstants.TABLE_USER + " where "
 					+ TableConstants.TABLE_USER_COL_UNAME + "=?";
-			
-			
+
 			Query query = session.createQuery(qryString);
-			userDetailsDO = (UserDetailsDO) query.setString(0, uname)
+			userDetailsDO = (UserDetailsTableDO) query.setString(0, uname)
 					.uniqueResult();
 
 			transaction.commit();
@@ -129,4 +131,46 @@ public class UserManagementDAOImpl extends BaseDAOImpl implements
 		return userDetailsDO;
 	}
 
+	@Override
+	public BaseResponseModel takeAppointment(
+			DrAppointmentTableDo drAppointmentTableDo) {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+
+			String qryString = "from DrAppointmentTableDo where dr_id=? and date_time=?";
+			Query query = session.createQuery(qryString);
+
+			DrAppointmentTableDo alreadyExistingAppointment = (DrAppointmentTableDo) query
+					.setInteger(0, drAppointmentTableDo.getDr_id())
+					.setString(1, drAppointmentTableDo.getDate_time())
+					.uniqueResult();
+
+			if (alreadyExistingAppointment != null) {
+				if (drAppointmentTableDo.getUser_id() == alreadyExistingAppointment
+						.getUser_id()) {
+					session.close();
+					return getResponseModel(null, false,
+							"You have already taken appointment for this date time !!");
+				} else {
+					session.close();
+					return getResponseModel(null, false,
+							"Sorry this timeslot is already booked !!");
+				}
+
+			} else {
+				int app_id = (Integer) session.save(drAppointmentTableDo);
+				drAppointmentTableDo.setId(app_id);
+				transaction.commit();
+				session.close();
+				return getResponseModel(drAppointmentTableDo, true,
+						"Appointment taken Successfully");
+			}
+
+		} catch (Exception e) {
+			transaction.rollback();
+			session.close();
+			return getResponseModel(null, false, e.getMessage());
+		}
+	}
 }

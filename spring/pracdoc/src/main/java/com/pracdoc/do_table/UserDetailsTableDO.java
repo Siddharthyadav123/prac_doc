@@ -1,4 +1,4 @@
-package com.pracdoc.data_objects;
+package com.pracdoc.do_table;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "user_table")
-public class UserDetailsDO {
+public class UserDetailsTableDO {
 
 	@JsonProperty("id")
 	@Id
@@ -47,6 +47,18 @@ public class UserDetailsDO {
 	@JsonProperty("updated_on")
 	@Column
 	public String updated_on;
+
+	@JsonProperty("gender")
+	@Column
+	public String gender;
+
+	@JsonProperty("dob")
+	@Column
+	public String dob;
+
+	@JsonProperty("profile_pic_url")
+	@Column
+	public String profile_pic_url;
 
 	public int getId() {
 		return id;
@@ -110,6 +122,30 @@ public class UserDetailsDO {
 
 	public void setUpdated_on(String updated_on) {
 		this.updated_on = updated_on;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getDob() {
+		return dob;
+	}
+
+	public void setDob(String dob) {
+		this.dob = dob;
+	}
+
+	public String getProfile_pic_url() {
+		return profile_pic_url;
+	}
+
+	public void setProfile_pic_url(String profile_pic_url) {
+		this.profile_pic_url = profile_pic_url;
 	}
 
 }

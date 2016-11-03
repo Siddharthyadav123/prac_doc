@@ -1,13 +1,17 @@
 package com.pracdoc.service;
 
-import com.pracdoc.data_objects.BaseResponseModel;
-import com.pracdoc.data_objects.LoginDO;
-import com.pracdoc.data_objects.UserDetailsDO;
+import com.pracdoc.do_others.BaseResponseModel;
+import com.pracdoc.do_request.LoginRequestDO;
+import com.pracdoc.do_table.DrAppointmentTableDo;
+import com.pracdoc.do_table.UserDetailsTableDO;
 
 public interface IUserManagementService {
-	public UserDetailsDO checkLogin(LoginDO login);
+	public UserDetailsTableDO checkLogin(LoginRequestDO login);
 
-	public BaseResponseModel signUpUser(UserDetailsDO userDetailsDO);
+	public BaseResponseModel signUpUser(UserDetailsTableDO userDetailsDO);
 
-	public BaseResponseModel updateUser(UserDetailsDO userDetailsDO);
+	public BaseResponseModel updateUser(UserDetailsTableDO userDetailsDO);
+
+	public BaseResponseModel takeAppointment(
+			DrAppointmentTableDo drAppointmentTableDo);
 }

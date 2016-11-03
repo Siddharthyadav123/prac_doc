@@ -1,12 +1,7 @@
-package com.pracdoc.data_objects;
+package com.pracdoc.do_request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-public class LoginDO {
-	@JsonProperty("uname")
+public class LoginRequestDO {
 	public String uname;
-
-	@JsonProperty("pwd")
 	public String pwd;
 
 	public String getUname() {
