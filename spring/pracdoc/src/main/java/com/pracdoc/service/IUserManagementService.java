@@ -14,4 +14,7 @@ public interface IUserManagementService {
 
 	public BaseResponseModel takeAppointment(
 			DrAppointmentTableDo drAppointmentTableDo);
+
+	public BaseResponseModel updateAppointment(
+			DrAppointmentTableDo drAppointmentTableDo);
 }

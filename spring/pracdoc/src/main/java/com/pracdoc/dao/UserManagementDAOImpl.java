@@ -173,4 +173,45 @@ public class UserManagementDAOImpl extends BaseDAOImpl implements
 			return getResponseModel(null, false, e.getMessage());
 		}
 	}
+
+	@Override
+	public BaseResponseModel updateAppointment(
+			DrAppointmentTableDo drAppointmentTableDo) {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+
+			String qryString = "from DrAppointmentTableDo where id=?";
+			Query query = session.createQuery(qryString);
+
+			DrAppointmentTableDo alreadyExistingAppointment = (DrAppointmentTableDo) query
+					.setInteger(0, drAppointmentTableDo.getId()).uniqueResult();
+			transaction.commit();
+			session.close();
+
+			if (alreadyExistingAppointment != null) {
+				session = sessionFactory.openSession();
+				transaction = session.beginTransaction();
+				session.update(drAppointmentTableDo);
+				transaction.commit();
+				session.close();
+				if (drAppointmentTableDo.getStatus() == 3) {
+					return getResponseModel(drAppointmentTableDo, true,
+							"Appointment Cancelled Successfully !!");
+				} else {
+					return getResponseModel(drAppointmentTableDo, true,
+							"Appointment Rescheduled Successfully!!");
+				}
+
+			} else {
+				session.close();
+				return getResponseModel(null, false, "Appointment not Found !!");
+			}
+
+		} catch (Exception e) {
+			transaction.rollback();
+			session.close();
+			return getResponseModel(null, false, e.getMessage());
+		}
+	}
 }

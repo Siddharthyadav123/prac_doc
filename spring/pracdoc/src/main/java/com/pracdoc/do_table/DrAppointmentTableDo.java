@@ -25,7 +25,7 @@ public class DrAppointmentTableDo {
 	public String date_time;
 
 	@Column(name = "status")
-	public String status;
+	public int status;
 
 	public int getId() {
 		return id;
@@ -59,11 +59,11 @@ public class DrAppointmentTableDo {
 		this.date_time = date_time;
 	}
 
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 

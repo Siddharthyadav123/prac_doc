@@ -99,4 +99,21 @@ public class UserManagementController extends BaseController {
 		}
 	}
 
+	@RequestMapping(value = "/appointment/update", method = RequestMethod.PUT)
+	@ResponseBody
+	public BaseResponseModel updateAppointment(
+			@RequestBody String appointmentDetail) {
+		try {
+			Gson gson = new Gson();
+			DrAppointmentTableDo drAppointmentTableDo = gson.fromJson(
+					appointmentDetail, DrAppointmentTableDo.class);
+			return userManagementService
+					.updateAppointment(drAppointmentTableDo);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return getResponseModel(null, false, e.getMessage());
+		}
+	}
+
 }

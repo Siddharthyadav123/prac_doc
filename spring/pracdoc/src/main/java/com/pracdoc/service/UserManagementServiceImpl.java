@@ -36,4 +36,10 @@ public class UserManagementServiceImpl implements IUserManagementService {
 		return userManagementDAO.takeAppointment(drAppointmentTableDo);
 	}
 
+	@Override
+	public BaseResponseModel updateAppointment(
+			DrAppointmentTableDo drAppointmentTableDo) {
+		return userManagementDAO.updateAppointment(drAppointmentTableDo);
+	}
+
 }
