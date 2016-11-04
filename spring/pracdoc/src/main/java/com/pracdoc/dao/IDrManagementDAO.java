@@ -2,7 +2,10 @@ package com.pracdoc.dao;
 
 import java.util.List;
 
+import com.pracdoc.do_others.BaseResponseModel;
 import com.pracdoc.do_others.DrTimeResponseDo;
+import com.pracdoc.do_request.LoginRequestDO;
+import com.pracdoc.do_table.DrAppointmentTableDo;
 import com.pracdoc.do_table.DrProfileTableDO;
 import com.pracdoc.do_table.DrSpecializationTableDO;
 
@@ -16,5 +19,12 @@ public interface IDrManagementDAO {
 			int specializationId);
 
 	// get doctor time slots by dr. id
-	public DrTimeResponseDo getDrTimeSlotsByItsIds(int[] slotIds);
+	public DrTimeResponseDo getDrTimeSlotsByItsIds(int drId, int[] slotsIds);
+
+	public DrProfileTableDO loginDoctor(LoginRequestDO loginRequestDO);
+
+	public List<DrAppointmentTableDo> getAppointmentList(int drId);
+
+	public BaseResponseModel updateAppointment(
+			DrAppointmentTableDo drAppointmentTableDo);
 }

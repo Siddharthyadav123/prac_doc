@@ -1,5 +1,7 @@
 package com.pracdoc.service;
 
+import java.util.List;
+
 import com.pracdoc.do_others.BaseResponseModel;
 import com.pracdoc.do_request.LoginRequestDO;
 import com.pracdoc.do_table.DrAppointmentTableDo;
@@ -17,4 +19,6 @@ public interface IUserManagementService {
 
 	public BaseResponseModel updateAppointment(
 			DrAppointmentTableDo drAppointmentTableDo);
+
+	public List<DrAppointmentTableDo> getAppointmentList(int userId);
 }

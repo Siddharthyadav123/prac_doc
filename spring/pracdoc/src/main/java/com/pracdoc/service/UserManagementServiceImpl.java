@@ -1,5 +1,7 @@
 package com.pracdoc.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,11 @@ public class UserManagementServiceImpl implements IUserManagementService {
 	public BaseResponseModel updateAppointment(
 			DrAppointmentTableDo drAppointmentTableDo) {
 		return userManagementDAO.updateAppointment(drAppointmentTableDo);
+	}
+
+	@Override
+	public List<DrAppointmentTableDo> getAppointmentList(int userId) {
+		return userManagementDAO.getAppointmentList(userId);
 	}
 
 }

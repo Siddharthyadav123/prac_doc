@@ -1,5 +1,7 @@
 package com.pracdoc.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +23,7 @@ import com.pracdoc.service.IUserManagementService;
 @RestController
 @RequestMapping(value = "api/user")
 @EnableWebMvc
-public class UserManagementController extends BaseController {
+public class UserController extends BaseController {
 
 	@Autowired
 	private IUserManagementService userManagementService;
@@ -81,6 +83,33 @@ public class UserManagementController extends BaseController {
 		BaseResponseModel baseResponseModel = userManagementService
 				.updateUser(gson.fromJson(signUpJson, UserDetailsTableDO.class));
 		return baseResponseModel;
+	}
+
+	/**
+	 * Get Appointment list of self being user/patient
+	 * 
+	 * @param userId
+	 * @param appointmentDetail
+	 * @return
+	 */
+	@RequestMapping(value = "/{user_id}/appointments", method = RequestMethod.GET)
+	@ResponseBody
+	public BaseResponseModel getAppointmentList(
+			@PathVariable(value = "user_id") int userId) {
+		try {
+			List<DrAppointmentTableDo> appointments = userManagementService
+					.getAppointmentList(userId);
+			if (appointments != null && appointments.size() > 0) {
+				return getResponseModel(appointments, true, "Appointment List.");
+			} else {
+				return getResponseModel(null, false,
+						"No Appointment found for you.");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return getResponseModel(null, false, e.getMessage());
+		}
 	}
 
 	@RequestMapping(value = "/appointment/take", method = RequestMethod.POST)

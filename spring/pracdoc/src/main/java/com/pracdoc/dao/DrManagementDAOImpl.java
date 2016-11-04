@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.pracdoc.constants.TableConstants;
+import com.pracdoc.do_others.BaseResponseModel;
 import com.pracdoc.do_others.DrTimeResponseDo;
+import com.pracdoc.do_request.LoginRequestDO;
+import com.pracdoc.do_table.DrAppointmentTableDo;
 import com.pracdoc.do_table.DrProfileTableDO;
 import com.pracdoc.do_table.DrSpecializationTableDO;
 import com.pracdoc.do_table.DrTimeTableDo;
@@ -57,7 +60,7 @@ public class DrManagementDAOImpl extends BaseDAOImpl implements
 	}
 
 	@Override
-	public DrTimeResponseDo getDrTimeSlotsByItsIds(int[] slotsIds) {
+	public DrTimeResponseDo getDrTimeSlotsByItsIds(int drId, int[] slotsIds) {
 		Session session = sessionFactory.openSession();
 		List<DrTimeTableDo> drTimeTableDos = new ArrayList<DrTimeTableDo>();
 		DrTimeResponseDo drTimeResponseDo = null;
@@ -68,7 +71,6 @@ public class DrManagementDAOImpl extends BaseDAOImpl implements
 
 			System.out.println(">>time slot query>> " + qryString);
 			drTimeTableDos = session.createQuery(qryString).list();
-			session.close();
 
 			drTimeResponseDo = new DrTimeResponseDo();
 			for (int i = 0; i < drTimeTableDos.size(); i++) {
@@ -87,10 +89,112 @@ public class DrManagementDAOImpl extends BaseDAOImpl implements
 					drTimeResponseDo.setNightTimeSlots(timeSlots);
 				}
 			}
+
+			// status=2 means Appointment approved.
+			String query = "from DrAppointmentTableDo where dr_id=" + drId
+					+ " and status=2";
+
+			List<DrAppointmentTableDo> busyAppointments = session.createQuery(
+					query).list();
+
+			if (busyAppointments != null && busyAppointments.size() > 0) {
+				String[] busySlotsArray = new String[busyAppointments.size()];
+				for (int i = 0; i < busyAppointments.size(); i++) {
+					busySlotsArray[i] = busyAppointments.get(i).getDate_time();
+				}
+				drTimeResponseDo.setBusySlopts(busySlotsArray);
+			}
+			session.close();
+
+		} catch (Exception e) {
+			session.close();
+			return drTimeResponseDo;
+		}
+		return drTimeResponseDo;
+	}
+
+	// ------------------------DOCTOR APIS----------------------------//
+	@Override
+	public DrProfileTableDO loginDoctor(LoginRequestDO loginRequestDO) {
+		DrProfileTableDO drProfileTableDO = null;
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			String qryString = "from DrProfileTableDO where dr_uname=? and dr_pwd=?";
+
+			Query query = session.createQuery(qryString);
+
+			drProfileTableDO = (DrProfileTableDO) query
+					.setString(0, loginRequestDO.getUname())
+					.setString(1, loginRequestDO.getPwd()).uniqueResult();
+
+			transaction.commit();
+			session.close();
+		} catch (Exception e) {
+			transaction.rollback();
+			session.close();
+		}
+		return drProfileTableDO;
+	}
+
+	@Override
+	public List<DrAppointmentTableDo> getAppointmentList(int drId) {
+		Session session = sessionFactory.openSession();
+		List<DrAppointmentTableDo> appointments = new ArrayList<DrAppointmentTableDo>();
+		try {
+
+			String qryString = "from DrAppointmentTableDo where dr_id=" + drId;
+			appointments = session.createQuery(qryString).list();
+			session.close();
 		} catch (Exception e) {
 			session.close();
 			return null;
 		}
-		return drTimeResponseDo;
+		return appointments;
+	}
+
+	@Override
+	public BaseResponseModel updateAppointment(
+			DrAppointmentTableDo drAppointmentTableDo) {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+
+			String qryString = "from DrAppointmentTableDo where id=?";
+			Query query = session.createQuery(qryString);
+
+			DrAppointmentTableDo alreadyExistingAppointment = (DrAppointmentTableDo) query
+					.setInteger(0, drAppointmentTableDo.getId()).uniqueResult();
+			transaction.commit();
+			session.close();
+
+			if (alreadyExistingAppointment != null) {
+				session = sessionFactory.openSession();
+				transaction = session.beginTransaction();
+				session.update(drAppointmentTableDo);
+				transaction.commit();
+				session.close();
+
+				// 3 means cancelled...
+				if (drAppointmentTableDo.getStatus() == 2) {
+					return getResponseModel(drAppointmentTableDo, true,
+							"Appointment Approved Successfully !!");
+				} else if (drAppointmentTableDo.getStatus() == 3) {
+					return getResponseModel(drAppointmentTableDo, true,
+							"Appointment Cancelled Successfully !!");
+				} else {
+					return getResponseModel(drAppointmentTableDo, true,
+							"Appointment Completed Successfully !!");
+				}
+			} else {
+				session.close();
+				return getResponseModel(null, false, "Appointment not Found !!");
+			}
+
+		} catch (Exception e) {
+			transaction.rollback();
+			session.close();
+			return getResponseModel(null, false, e.getMessage());
+		}
 	}
 }

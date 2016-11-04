@@ -17,6 +17,7 @@ import com.pracdoc.do_others.BaseResponseModel;
 import com.pracdoc.do_others.DrTimeResponseDo;
 import com.pracdoc.do_request.DrTimeRequestDo;
 import com.pracdoc.do_request.LoginRequestDO;
+import com.pracdoc.do_table.DrAppointmentTableDo;
 import com.pracdoc.do_table.DrProfileTableDO;
 import com.pracdoc.do_table.DrSpecializationTableDO;
 import com.pracdoc.do_table.UserDetailsTableDO;
@@ -24,7 +25,7 @@ import com.pracdoc.do_table.UserDetailsTableDO;
 @RestController
 @RequestMapping(value = "api/dr")
 @EnableWebMvc
-public class DrControllerForPatient extends BaseController {
+public class DoctorController extends BaseController {
 	@Autowired
 	public IDrManagementDAO drManagementDAO;
 
@@ -76,9 +77,11 @@ public class DrControllerForPatient extends BaseController {
 		}
 	}
 
-	@RequestMapping(value = "/time_slots", method = RequestMethod.POST)
+	@RequestMapping(value = "/{dr_id}/time_slots", method = RequestMethod.POST)
 	@ResponseBody
-	public BaseResponseModel checkLogin(@RequestBody String timeSlotString) {
+	public BaseResponseModel checkLogin(
+			@PathVariable(value = "dr_id") int drId,
+			@RequestBody String timeSlotString) {
 		try {
 			Gson gson = new Gson();
 			DrTimeRequestDo drTimeRequestDo = gson.fromJson(timeSlotString,
@@ -91,7 +94,7 @@ public class DrControllerForPatient extends BaseController {
 			slotsIds[3] = drTimeRequestDo.getDr_night_time_slot_id();
 
 			DrTimeResponseDo drTimeResponseDo = drManagementDAO
-					.getDrTimeSlotsByItsIds(slotsIds);
+					.getDrTimeSlotsByItsIds(drId, slotsIds);
 
 			if (drTimeResponseDo == null) {
 				return getResponseModel(null, false, "Time slots not Found !!");
@@ -105,4 +108,61 @@ public class DrControllerForPatient extends BaseController {
 		}
 	}
 
+	// ------------------------DOCTOR APIS----------------------------//
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@ResponseBody
+	public BaseResponseModel loginDoctor(@RequestBody String loginJson) {
+		try {
+			Gson gson = new Gson();
+			DrProfileTableDO drProfileTableDO = drManagementDAO
+					.loginDoctor(gson.fromJson(loginJson, LoginRequestDO.class));
+
+			if (drProfileTableDO == null) {
+				return getResponseModel(null, false, "Doctor not Found !!");
+			} else {
+				return getResponseModel(drProfileTableDO, true,
+						"Loging successful.");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return getResponseModel(null, false, e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/{dr_id}/appointments", method = RequestMethod.GET)
+	@ResponseBody
+	public BaseResponseModel getAppointmentList(
+			@PathVariable(value = "dr_id") int drId) {
+		try {
+			List<DrAppointmentTableDo> appointments = drManagementDAO
+					.getAppointmentList(drId);
+			if (appointments != null && appointments.size() > 0) {
+				return getResponseModel(appointments, true, "Appointment List.");
+			} else {
+				return getResponseModel(null, false,
+						"No one booked Appointment yet.");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return getResponseModel(null, false, e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/appointment/update", method = RequestMethod.PUT)
+	@ResponseBody
+	public BaseResponseModel updateAppointment(
+			@RequestBody String appointmentDetail) {
+		try {
+			Gson gson = new Gson();
+			DrAppointmentTableDo drAppointmentTableDo = gson.fromJson(
+					appointmentDetail, DrAppointmentTableDo.class);
+			return drManagementDAO.updateAppointment(drAppointmentTableDo);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return getResponseModel(null, false, e.getMessage());
+		}
+	}
 }

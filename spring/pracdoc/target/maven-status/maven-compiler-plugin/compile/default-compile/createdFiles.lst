@@ -1,6 +1,5 @@
 com\pracdoc\dao\UserManagementDAOImpl.class
 com\pracdoc\dao\IDrManagementDAO.class
-com\pracdoc\controller\UserManagementController.class
 com\pracdoc\do_table\DrAppointmentTableDo.class
 com\pracdoc\do_table\DrSpecializationTableDO.class
 com\pracdoc\application\PracDocInitializer.class
@@ -12,7 +11,9 @@ com\pracdoc\service\DrManagementServiceImpl.class
 com\pracdoc\do_table\UserDetailsTableDO.class
 com\pracdoc\do_table\DrProfileTableDO.class
 com\pracdoc\dao\IUserManagementDAO.class
+com\pracdoc\controller\UserController.class
 com\pracdoc\service\UserManagementServiceImpl.class
+com\pracdoc\controller\DoctorController.class
 com\pracdoc\controller\BaseController.class
 com\pracdoc\do_table\DrTimeTableDo.class
 com\pracdoc\configuration\HibernetConfig.class
@@ -21,5 +22,4 @@ com\pracdoc\application\Application.class
 com\pracdoc\constants\TableConstants.class
 com\pracdoc\do_request\DrTimeRequestDo.class
 com\pracdoc\do_others\DrTimeResponseDo.class
-com\pracdoc\controller\DrControllerForPatient.class
 com\pracdoc\service\IUserManagementService.class

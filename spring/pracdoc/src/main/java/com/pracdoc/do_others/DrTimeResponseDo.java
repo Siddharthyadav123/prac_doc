@@ -5,6 +5,7 @@ public class DrTimeResponseDo {
 	private String[] afternoonTimeSlots;
 	private String[] eveningTimeSlots;
 	private String[] nightTimeSlots;
+	private String[] busySlopts;
 
 	public String[] getMorningTimeSlots() {
 		return morningTimeSlots;
@@ -36,6 +37,14 @@ public class DrTimeResponseDo {
 
 	public void setNightTimeSlots(String[] nightTimeSlots) {
 		this.nightTimeSlots = nightTimeSlots;
+	}
+
+	public String[] getBusySlopts() {
+		return busySlopts;
+	}
+
+	public void setBusySlopts(String[] busySlopts) {
+		this.busySlopts = busySlopts;
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.pracdoc.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,6 +14,7 @@ import com.pracdoc.constants.TableConstants;
 import com.pracdoc.do_others.BaseResponseModel;
 import com.pracdoc.do_request.LoginRequestDO;
 import com.pracdoc.do_table.DrAppointmentTableDo;
+import com.pracdoc.do_table.DrProfileTableDO;
 import com.pracdoc.do_table.UserDetailsTableDO;
 
 @Repository
@@ -147,8 +151,8 @@ public class UserManagementDAOImpl extends BaseDAOImpl implements
 					.uniqueResult();
 
 			if (alreadyExistingAppointment != null) {
-				if (drAppointmentTableDo.getUser_id() == alreadyExistingAppointment
-						.getUser_id()) {
+				if (drAppointmentTableDo.getPatient_id() == alreadyExistingAppointment
+						.getPatient_id()) {
 					session.close();
 					return getResponseModel(null, false,
 							"You have already taken appointment for this date time !!");
@@ -195,6 +199,8 @@ public class UserManagementDAOImpl extends BaseDAOImpl implements
 				session.update(drAppointmentTableDo);
 				transaction.commit();
 				session.close();
+
+				// 3 means cancelled...
 				if (drAppointmentTableDo.getStatus() == 3) {
 					return getResponseModel(drAppointmentTableDo, true,
 							"Appointment Cancelled Successfully !!");
@@ -213,5 +219,22 @@ public class UserManagementDAOImpl extends BaseDAOImpl implements
 			session.close();
 			return getResponseModel(null, false, e.getMessage());
 		}
+	}
+
+	@Override
+	public List<DrAppointmentTableDo> getAppointmentList(int userId) {
+		Session session = sessionFactory.openSession();
+		List<DrAppointmentTableDo> appointments = new ArrayList<DrAppointmentTableDo>();
+		try {
+
+			String qryString = "from DrAppointmentTableDo where patient_id="
+					+ userId + " and status!=3";
+			appointments = session.createQuery(qryString).list();
+			session.close();
+		} catch (Exception e) {
+			session.close();
+			return null;
+		}
+		return appointments;
 	}
 }
