@@ -1,5 +1,6 @@
 package com.sidproj.nagpurdrs.screens;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -7,15 +8,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.sidproj.nagpurdrs.R;
+import com.sidproj.nagpurdrs.adapters.SpecalizationListAdapter;
 
 
 public class HomeScreenActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListView doctorCateogryListView;
+    private SpecalizationListAdapter specalizationListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +29,28 @@ public class HomeScreenActivity extends BaseActivity
         setupActionBar(false, "Nagpur Doctors");
         setupNavigationDrawer();
         initViews();
+        registerEvents();
+        showSpecializationListAdapter();
+    }
+
+
+    private void showSpecializationListAdapter() {
+        specalizationListAdapter = new SpecalizationListAdapter(this);
+        doctorCateogryListView.setAdapter(specalizationListAdapter);
     }
 
     private void initViews() {
         doctorCateogryListView = (ListView) findViewById(R.id.doctorCateogryListView);
+    }
+
+    private void registerEvents() {
+        doctorCateogryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(HomeScreenActivity.this, DrListActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private void setupNavigationDrawer() {
@@ -65,7 +88,6 @@ public class HomeScreenActivity extends BaseActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -76,7 +98,7 @@ public class HomeScreenActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

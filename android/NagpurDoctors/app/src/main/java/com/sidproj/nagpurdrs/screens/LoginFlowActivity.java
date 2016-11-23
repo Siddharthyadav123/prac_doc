@@ -90,6 +90,7 @@ public class LoginFlowActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 Intent i = new Intent(LoginFlowActivity.this, HomeScreenActivity.class);
                 startActivity(i);
             }

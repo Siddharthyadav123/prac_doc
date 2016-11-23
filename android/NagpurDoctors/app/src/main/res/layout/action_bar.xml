@@ -13,7 +13,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
 
-    </android.support.v7.widget.Toolbar>Fs
+    </android.support.v7.widget.Toolbar>
 
 
     <RelativeLayout
@@ -34,8 +34,8 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"

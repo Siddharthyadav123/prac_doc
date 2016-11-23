@@ -49,11 +49,11 @@
         </activity>
         <activity android:name=".screens.LoginFlowActivity" />
         <activity android:name=".screens.SignUpActivity" />
-
         <activity
             android:name=".screens.HomeScreenActivity"
             android:label="@string/title_activity_home_screen"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".screens.DrListActivity" />
     </application>
 
 </manifest>

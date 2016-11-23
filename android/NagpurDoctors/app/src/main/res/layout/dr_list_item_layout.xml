@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/drFullNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="Dr. Name"
+            android:textColor="@color/Black" />
+
+        <TextView
+            android:id="@+id/drExperienceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/drFullNameTextView"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="2dp"
+            android:text="2 yrs exp"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/drClinicAddressTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/drFullNameTextView"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="2dp"
+            android:text="Clinic Address"
+            android:textColor="@color/Gray"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/drFeesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/drClinicAddressTextView"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="2dp"
+            android:text="Fee: 200 /-"
+            android:textColor="@color/Gray"
+            android:textSize="13dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@+id/drFeesTextView"
+            android:background="@color/TheamLightColor">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="CALL"
+                android:textColor="@color/White" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:alpha="0.4"
+                android:background="@color/White" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="BOOK"
+                android:textColor="@color/White" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>
