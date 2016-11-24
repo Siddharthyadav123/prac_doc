@@ -9,6 +9,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.sidproj.nagpurdrs.application.MyApplication;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.Map;
 
 /**
@@ -27,9 +30,10 @@ public class APIHandler implements Response.Listener<Object>, Response.ErrorList
     private String requestBody = null;
     private Map<String, String> headers = null;
     private boolean showToastOnRespone = true;
+    private boolean isResponseFormatIsArray = true;
 
     public APIHandler(Context context, APICallback apiCallback, int requestId, int methodType, String url,
-                      boolean showLoading, String loadingText, String requestBody, Map<String, String> headers) {
+                      boolean showLoading, String loadingText, String requestBody, boolean isResponseFormatIsArray) {
         this.context = context;
         this.apiCallback = apiCallback;
         this.requestId = requestId;
@@ -38,7 +42,8 @@ public class APIHandler implements Response.Listener<Object>, Response.ErrorList
         this.showLoading = showLoading;
         this.loadingText = loadingText;
         this.requestBody = requestBody;
-        this.headers = headers;
+        this.isResponseFormatIsArray = isResponseFormatIsArray;
+//        this.headers = headers;
     }
 
     private void showLoading() {
@@ -78,7 +83,7 @@ public class APIHandler implements Response.Listener<Object>, Response.ErrorList
             if (showToastOnRespone) {
                 String noInternetConnection = "No internet connection found";
                 if (apiCallback != null) {
-                    apiCallback.onAPIFailureResponse(requestId, noInternetConnection);
+                    apiCallback.onAPIResponse(requestId, false, null, noInternetConnection);
                 }
 
                 MyApplication.getInstance().showNormalDailog(context, noInternetConnection);
@@ -117,24 +122,30 @@ public class APIHandler implements Response.Listener<Object>, Response.ErrorList
     @Override
     public void onResponse(Object response) {
         hideLoading();
-        if (response != null) {
-            System.out.println("[API] response body volly = " + response.toString());
-            if (apiCallback != null) {
-                apiCallback.onAPISuccessResponse(requestId, response.toString());
+        try {
+            JSONObject jsonObject = new JSONObject(response.toString());
+            boolean isSuccess = jsonObject.getBoolean("success");
+            String msg = jsonObject.getString("msg");
+
+            if (isResponseFormatIsArray) {
+                JSONArray resJsonArray = jsonObject.getJSONArray("response");
+                apiCallback.onAPIResponse(requestId, isSuccess, resJsonArray.toString(), msg);
+            } else {
+                JSONObject resJsonObject = jsonObject.getJSONObject("response");
+                apiCallback.onAPIResponse(requestId, isSuccess, resJsonObject.toString(), msg);
             }
-        } else {
-            if (apiCallback != null) {
-                apiCallback.onAPIFailureResponse(requestId, "Error in response");
-            }
-            System.out.println("[API] response fail volly = " + "Error in response");
+        } catch (Exception e) {
+            e.printStackTrace();
+            apiCallback.onAPIResponse(requestId, false, null, e.getMessage());
         }
+
 
     }
 
     @Override
     public void onErrorResponse(VolleyError error) {
         if (apiCallback != null) {
-            apiCallback.onAPIFailureResponse(requestId, error.getMessage());
+            apiCallback.onAPIResponse(requestId, false, null, error.getMessage());
         }
         hideLoading();
     }
@@ -147,4 +158,5 @@ public class APIHandler implements Response.Listener<Object>, Response.ErrorList
     public void setShowToastOnRespone(boolean showToastOnRespone) {
         this.showToastOnRespone = showToastOnRespone;
     }
+
 }

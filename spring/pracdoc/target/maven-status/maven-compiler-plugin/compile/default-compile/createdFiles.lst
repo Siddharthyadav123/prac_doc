@@ -5,6 +5,7 @@ com\pracdoc\do_table\DrSpecializationTableDO.class
 com\pracdoc\application\PracDocInitializer.class
 com\pracdoc\dao\BaseDAOImpl.class
 com\pracdoc\do_request\LoginRequestDO.class
+com\pracdoc\configuration\SimpleCORSFilter.class
 com\pracdoc\service\IDrManagmementService.class
 com\pracdoc\do_others\BaseResponseModel.class
 com\pracdoc\service\DrManagementServiceImpl.class

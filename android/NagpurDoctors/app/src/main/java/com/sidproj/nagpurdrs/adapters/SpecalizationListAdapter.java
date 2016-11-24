@@ -5,8 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.sidproj.nagpurdrs.R;
+import com.sidproj.nagpurdrs.entities.DrSpeciliazation;
+
+import java.util.ArrayList;
 
 /**
  * Created by siddharth on 11/23/2016.
@@ -14,15 +18,17 @@ import com.sidproj.nagpurdrs.R;
 public class SpecalizationListAdapter extends BaseAdapter {
 
     private Context context;
+    private ArrayList<DrSpeciliazation> drSpeciliazationArrayList;
 
-    public SpecalizationListAdapter(Context context) {
+    public SpecalizationListAdapter(Context context, ArrayList<DrSpeciliazation> drSpeciliazationArrayList) {
         this.context = context;
+        this.drSpeciliazationArrayList = drSpeciliazationArrayList;
     }
 
 
     @Override
     public int getCount() {
-        return 10;
+        return drSpeciliazationArrayList.size();
     }
 
     @Override
@@ -40,6 +46,14 @@ public class SpecalizationListAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.specialization_list_item, null);
         }
+
+        TextView listTextView = (TextView) convertView.findViewById(R.id.listTextView);
+        listTextView.setText(drSpeciliazationArrayList.get(position).getName());
         return convertView;
+    }
+
+    public void refreshAdapter(ArrayList<DrSpeciliazation> drSpeciliazationArrayList) {
+        this.drSpeciliazationArrayList = drSpeciliazationArrayList;
+        notifyDataSetChanged();
     }
 }

@@ -6,17 +6,23 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        android:background="@color/White">
 
 
         <TextView
             android:id="@+id/drFullNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
+            android:layout_toLeftOf="@+id/drExperienceTextView"
             android:text="Dr. Name"
-            android:textColor="@color/Black" />
+            android:textAllCaps="true"
+            android:textColor="@color/Black"
+            android:textSize="17dp" />
 
         <TextView
             android:id="@+id/drExperienceTextView"
@@ -29,6 +35,15 @@
             android:text="2 yrs exp"
             android:textSize="13dp" />
 
+        <ImageView
+            android:id="@+id/locationImageView"
+            android:layout_width="10dp"
+            android:layout_height="15dp"
+            android:layout_below="@+id/drFullNameTextView"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/location" />
+
         <TextView
             android:id="@+id/drClinicAddressTextView"
             android:layout_width="wrap_content"
@@ -36,9 +51,19 @@
             android:layout_below="@+id/drFullNameTextView"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/locationImageView"
             android:text="Clinic Address"
             android:textColor="@color/Gray"
             android:textSize="13dp" />
+
+        <ImageView
+            android:id="@+id/rsImageView"
+            android:layout_width="10dp"
+            android:layout_height="15dp"
+            android:layout_below="@+id/drClinicAddressTextView"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/rupease" />
 
         <TextView
             android:id="@+id/drFeesTextView"
@@ -48,20 +73,23 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="2dp"
-            android:text="Fee: 200 /-"
+            android:layout_toRightOf="@+id/rsImageView"
+            android:text="200/-"
             android:textColor="@color/Gray"
             android:textSize="13dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_below="@+id/drFeesTextView"
-            android:background="@color/TheamLightColor">
+            android:alpha="0.9"
+            android:background="@color/TheamDarkColor">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="?android:selectableItemBackground"
                 android:gravity="center"
                 android:text="CALL"
                 android:textColor="@color/White" />
@@ -76,6 +104,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="?android:selectableItemBackground"
                 android:gravity="center"
                 android:text="BOOK"
                 android:textColor="@color/White" />

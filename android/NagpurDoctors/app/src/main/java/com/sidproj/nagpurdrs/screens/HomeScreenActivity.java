@@ -12,15 +12,26 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.android.volley.Request;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.adapters.SpecalizationListAdapter;
+import com.sidproj.nagpurdrs.constants.RequestConstant;
+import com.sidproj.nagpurdrs.constants.URLConstants;
+import com.sidproj.nagpurdrs.entities.DrSpeciliazation;
+import com.sidproj.nagpurdrs.volly.APICallback;
+import com.sidproj.nagpurdrs.volly.APIHandler;
+
+import java.util.ArrayList;
 
 
 public class HomeScreenActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, APICallback {
 
     private ListView doctorCateogryListView;
     private SpecalizationListAdapter specalizationListAdapter;
+    private ArrayList<DrSpeciliazation> drSpeciliazationArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +42,18 @@ public class HomeScreenActivity extends BaseActivity
         initViews();
         registerEvents();
         showSpecializationListAdapter();
+        requestDrSpecialization();
+    }
+
+    private void requestDrSpecialization() {
+        APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_DR_SPECIALIZATION_LIST,
+                Request.Method.GET, URLConstants.URL_GET_SPECIALIZATIONlIST, true, "Loading Specialization...", null, true);
+        apiHandler.requestAPI();
     }
 
 
     private void showSpecializationListAdapter() {
-        specalizationListAdapter = new SpecalizationListAdapter(this);
+        specalizationListAdapter = new SpecalizationListAdapter(this, drSpeciliazationArrayList);
         doctorCateogryListView.setAdapter(specalizationListAdapter);
     }
 
@@ -48,6 +66,7 @@ public class HomeScreenActivity extends BaseActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(HomeScreenActivity.this, DrListActivity.class);
+                i.putExtra("selected_specialization", drSpeciliazationArrayList.get(position));
                 startActivity(i);
             }
         });
@@ -114,5 +133,18 @@ public class HomeScreenActivity extends BaseActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onAPIResponse(int requestId, boolean isSuccess, String response, String errorString) {
+        switch (requestId) {
+            case RequestConstant.REQUEST_DR_SPECIALIZATION_LIST:
+                Gson gson = new Gson();
+                drSpeciliazationArrayList = (ArrayList<DrSpeciliazation>) gson.fromJson(response,
+                        new TypeToken<ArrayList<DrSpeciliazation>>() {
+                        }.getType());
+                specalizationListAdapter.refreshAdapter(drSpeciliazationArrayList);
+                break;
+        }
     }
 }
