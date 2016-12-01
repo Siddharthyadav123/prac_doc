@@ -1,11 +1,16 @@
 package com.sidproj.nagpurdrs.screens;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sidproj.nagpurdrs.R;
@@ -17,8 +22,10 @@ import com.sidproj.nagpurdrs.R;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private TextView logoNameTextView;
+    protected TextView logoNameTextView;
     protected Toolbar toolbar = null;
+    protected ImageView notificationImageView;
+    protected TextView notificationCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +41,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         logoNameTextView = (TextView) findViewById(R.id.logoNameTextView);
         logoNameTextView.setText(title);
+
+        notificationImageView = (ImageView) findViewById(R.id.notificationImageView);
+        notificationCount = (TextView) findViewById(R.id.notificationCount);
 
         // add back arrow to toolbar
         if (getSupportActionBar() != null) {
@@ -51,6 +61,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
+    public void hideNotificationBtn() {
+        notificationImageView.setVisibility(View.GONE);
+        notificationCount.setVisibility(View.GONE);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -59,5 +74,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    public void showInfoDailog(Context context, String bodyText) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setTitle("Message");
+        builder1.setMessage(bodyText);
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
 
 }

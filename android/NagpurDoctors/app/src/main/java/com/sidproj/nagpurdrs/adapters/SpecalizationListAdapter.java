@@ -20,6 +20,7 @@ public class SpecalizationListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<DrSpeciliazation> drSpeciliazationArrayList;
 
+
     public SpecalizationListAdapter(Context context, ArrayList<DrSpeciliazation> drSpeciliazationArrayList) {
         this.context = context;
         this.drSpeciliazationArrayList = drSpeciliazationArrayList;
@@ -28,6 +29,9 @@ public class SpecalizationListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if (drSpeciliazationArrayList == null) {
+            return 0;
+        }
         return drSpeciliazationArrayList.size();
     }
 
@@ -49,6 +53,7 @@ public class SpecalizationListAdapter extends BaseAdapter {
 
         TextView listTextView = (TextView) convertView.findViewById(R.id.listTextView);
         listTextView.setText(drSpeciliazationArrayList.get(position).getName());
+
         return convertView;
     }
 

@@ -41,7 +41,7 @@
             android:layout_height="15dp"
             android:layout_below="@+id/drFullNameTextView"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="3.5dp"
             android:src="@drawable/location" />
 
         <TextView
@@ -62,7 +62,7 @@
             android:layout_height="15dp"
             android:layout_below="@+id/drClinicAddressTextView"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="3.5dp"
             android:src="@drawable/rupease" />
 
         <TextView
@@ -86,6 +86,7 @@
             android:background="@color/TheamDarkColor">
 
             <TextView
+                android:id="@+id/callTextView"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -101,6 +102,7 @@
                 android:background="@color/White" />
 
             <TextView
+                android:id="@+id/bookTextView"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

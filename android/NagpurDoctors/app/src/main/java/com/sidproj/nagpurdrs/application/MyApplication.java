@@ -7,8 +7,10 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -21,6 +23,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.sidproj.nagpurdrs.R;
+import com.sidproj.nagpurdrs.location.LocationModel;
 import com.sidproj.nagpurdrs.volly.LruBitmapCache;
 
 /**
@@ -35,6 +39,8 @@ public class MyApplication extends Application {
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
 
+    public LocationModel locationModel;
+
     public static MyApplication getInstance() {
         return myApplication;
     }
@@ -45,8 +51,36 @@ public class MyApplication extends Application {
         myApplication = this;
         MultiDex.install(this);
 
+        //location model
+        locationModel = new LocationModel(this);
+
     }
 
+    public void enableGPS(final Activity activity) {
+        float sourceLat = locationModel.getLatitude();
+        float sourceLong = locationModel.getLongitude();
+        if (sourceLat == 0.0 && sourceLong == 0.0) {
+            LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setTitle(getResources().getString(R.string.enableGPSText));  // GPS not found
+                builder.setMessage(getResources().getString(R.string.enableGPSBody)); // Want to enable?
+                builder.setPositiveButton(getResources().getString(R.string.settingsGPSText), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        activity.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.setCancelable(false);
+                builder.create().show();
+            }
+        }
+
+    }
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -181,8 +215,6 @@ public class MyApplication extends Application {
     }
 
 
-
-
     public void showAleart(Context context, final DailogCallback dailogCallback, String title, String bodyText, String yesBtnText, String noBtnText) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
         builder1.setMessage(bodyText);
@@ -210,7 +242,6 @@ public class MyApplication extends Application {
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
-
 
 
     public interface DailogCallback {

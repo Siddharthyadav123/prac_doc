@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.adapters.SpecalizationListAdapter;
+import com.sidproj.nagpurdrs.application.MyApplication;
 import com.sidproj.nagpurdrs.constants.RequestConstant;
 import com.sidproj.nagpurdrs.constants.URLConstants;
 import com.sidproj.nagpurdrs.entities.DrSpeciliazation;
@@ -43,6 +44,8 @@ public class HomeScreenActivity extends BaseActivity
         registerEvents();
         showSpecializationListAdapter();
         requestDrSpecialization();
+
+        MyApplication.getInstance().enableGPS(this);
     }
 
     private void requestDrSpecialization() {
@@ -116,17 +119,15 @@ public class HomeScreenActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.yourAppointments) {
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.profile) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.aboutUs) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.feedback) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.help) {
 
         }
 

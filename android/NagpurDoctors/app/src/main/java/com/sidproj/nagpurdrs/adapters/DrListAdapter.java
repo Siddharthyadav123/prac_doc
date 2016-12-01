@@ -20,6 +20,8 @@ public class DrListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<DrProfileDo> drList;
 
+    private String specializationText;
+
     public DrListAdapter(Context context, ArrayList<DrProfileDo> drList) {
         this.context = context;
         this.drList = drList;
@@ -28,6 +30,9 @@ public class DrListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if (drList == null) {
+            return 0;
+        }
         return drList.size();
     }
 
@@ -58,11 +63,17 @@ public class DrListAdapter extends BaseAdapter {
         drFeesTextView.setText(drProfileDo.getDrConsulationFee() + " /-");
         drExperienceTextView.setText(drProfileDo.getDrExperience() + " yrs exp");
 
+        drProfileDo.setSpecializationText(specializationText);
+
         return convertView;
     }
 
     public void refreshAdapter(ArrayList<DrProfileDo> drList) {
         this.drList = drList;
         notifyDataSetChanged();
+    }
+
+    public void setSpecializationText(String specializationText) {
+        this.specializationText = specializationText;
     }
 }

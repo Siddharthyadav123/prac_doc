@@ -30,17 +30,29 @@
             android:text="Nagpur Doctors"
             android:textAllCaps="true"
             android:textColor="@color/TheamLightColor"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/notificationImageView"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
-            android:background="@drawable/theam_light_button_drawable"
-            android:src="@drawable/dr_logo" />
+            android:background="@drawable/bell" />
+
+        <TextView
+            android:id="@+id/notificationCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/notificationImageView"
+            android:layout_alignTop="@+id/notificationImageView"
+            android:background="@color/TheamLightColor"
+            android:padding="2dp"
+            android:text=" 0 "
+            android:textColor="@color/White"
+            android:textSize="7dp" />
     </RelativeLayout>
 
     <View

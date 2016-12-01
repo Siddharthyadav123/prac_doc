@@ -33,6 +33,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+
     <application
         android:name=".application.MyApplication"
         android:allowBackup="true"
@@ -54,6 +55,15 @@
             android:label="@string/title_activity_home_screen"
             android:theme="@style/AppTheme" />
         <activity android:name=".screens.DrListActivity" />
+        <activity android:name=".screens.DrProfileActivity"></activity>
+
+        <!--for location-->
+        <receiver android:name=".recievers.GpsLocationReceiver">
+            <intent-filter>
+                <action android:name="android.location.PROVIDERS_CHANGED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

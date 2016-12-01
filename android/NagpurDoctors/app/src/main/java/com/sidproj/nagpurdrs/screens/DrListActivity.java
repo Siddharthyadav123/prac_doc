@@ -1,5 +1,6 @@
 package com.sidproj.nagpurdrs.screens;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -62,7 +63,9 @@ public class DrListActivity extends BaseActivity implements APICallback {
         drListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Intent i = new Intent(DrListActivity.this, DrProfileActivity.class);
+                i.putExtra("key_dr_profile", drList.get(position));
+                startActivity(i);
             }
         });
 
@@ -76,7 +79,9 @@ public class DrListActivity extends BaseActivity implements APICallback {
                 drList = (ArrayList<DrProfileDo>) gson.fromJson(response,
                         new TypeToken<ArrayList<DrProfileDo>>() {
                         }.getType());
+                drListAdapter.setSpecializationText(selectedSpecialization.getName());
                 drListAdapter.refreshAdapter(drList);
+
                 break;
         }
     }

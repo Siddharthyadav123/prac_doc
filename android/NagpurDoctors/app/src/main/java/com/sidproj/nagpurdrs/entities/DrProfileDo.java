@@ -29,6 +29,7 @@ public class DrProfileDo implements Parcelable {
     private int dr_evening_time_slot_id;
     private int dr_night_time_slot_id;
     private String dr_working_day;
+    private String specializationText;
 
     protected DrProfileDo(Parcel in) {
         id = in.readInt();
@@ -52,6 +53,7 @@ public class DrProfileDo implements Parcelable {
         dr_evening_time_slot_id = in.readInt();
         dr_night_time_slot_id = in.readInt();
         dr_working_day = in.readString();
+        specializationText = in.readString();
     }
 
     public static final Creator<DrProfileDo> CREATOR = new Creator<DrProfileDo>() {
@@ -234,6 +236,14 @@ public class DrProfileDo implements Parcelable {
         this.dr_working_day = dr_working_day;
     }
 
+    public String getSpecializationText() {
+        return specializationText;
+    }
+
+    public void setSpecializationText(String specializationText) {
+        this.specializationText = specializationText;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -262,5 +272,7 @@ public class DrProfileDo implements Parcelable {
         dest.writeInt(dr_evening_time_slot_id);
         dest.writeInt(dr_night_time_slot_id);
         dest.writeString(dr_working_day);
+        dest.writeString(specializationText);
+
     }
 }
