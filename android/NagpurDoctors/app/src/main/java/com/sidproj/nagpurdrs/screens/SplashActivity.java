@@ -38,10 +38,10 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 finish();
-                Intent i = new Intent(SplashActivity.this,LoginFlowActivity.class);
+                Intent i = new Intent(SplashActivity.this, LoginFlowActivity.class);
                 startActivity(i);
             }
-        },2000);
+        }, 2000);
 
     }
 

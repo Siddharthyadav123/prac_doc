@@ -11,6 +11,10 @@
             android:id="@+id/profile"
             android:title="Profile" />
 
+        <item
+            android:id="@+id/logout"
+            android:title="Logout" />
+
     </group>
 
     <item android:title="Nagpur Doctors">

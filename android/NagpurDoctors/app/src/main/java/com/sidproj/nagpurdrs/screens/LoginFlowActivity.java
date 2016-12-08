@@ -1,7 +1,6 @@
 package com.sidproj.nagpurdrs.screens;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -11,10 +10,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.google.gson.Gson;
 import com.sidproj.nagpurdrs.R;
+import com.sidproj.nagpurdrs.constants.RequestConstant;
+import com.sidproj.nagpurdrs.constants.URLConstants;
+import com.sidproj.nagpurdrs.entities.UserProfileDo;
+import com.sidproj.nagpurdrs.volly.APIHandler;
 
-public class LoginFlowActivity extends AppCompatActivity {
+import org.json.JSONObject;
+
+public class LoginFlowActivity extends BaseActivity {
 
     private ImageView logoImageView;
 
@@ -77,6 +85,7 @@ public class LoginFlowActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard();
                 swichFormsWithAnimation(loginOptionBtnContainer, loginFormContainer);
             }
         });
@@ -90,11 +99,38 @@ public class LoginFlowActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                Intent i = new Intent(LoginFlowActivity.this, HomeScreenActivity.class);
-                startActivity(i);
+                if (isValid()) {
+                    requestSignIn();
+                }
             }
         });
+    }
+
+    private void requestSignIn() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("uname", userNameEditText.getText().toString().trim());
+            jsonObject.put("pwd", pwdEditText.getText().toString().trim());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_USER_SIGNIN, Request.Method.POST, URLConstants.URL_POST_USER_SIGNIN
+                , true, "Please wait while signing in...", jsonObject.toString(), false);
+        apiHandler.requestAPI();
+    }
+
+    private boolean isValid() {
+        if (userNameEditText.getText().toString().trim().length() == 0) {
+            showInfoDailog(this, "Please enter user name");
+            return false;
+        } else if (pwdEditText.getText().toString().trim().length() == 0) {
+            showInfoDailog(this, "Please enter password");
+            return false;
+        }
+
+        return true;
     }
 
     private void swichFormsWithAnimation(final LinearLayout layoutToShow, final LinearLayout layoutToHide) {
@@ -119,8 +155,22 @@ public class LoginFlowActivity extends AppCompatActivity {
             }
         });
         layoutToHide.startAnimation(fadeOut);
-
     }
 
 
+    @Override
+    public void onAPIResponse(int requestId, boolean isSuccess, String response, String errorString) {
+        if (isSuccess) {
+            Toast.makeText(LoginFlowActivity.this, "SignIn Successful", Toast.LENGTH_SHORT).show();
+
+            Gson gson = new Gson();
+            UserProfileDo userProfileDo = gson.fromJson(response, UserProfileDo.class);
+
+            Intent i = new Intent(LoginFlowActivity.this, HomeScreenActivity.class);
+            i.putExtra("user_details", userProfileDo);
+            startActivity(i);
+
+            finish();
+        }
+    }
 }

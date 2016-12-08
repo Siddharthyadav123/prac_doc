@@ -3,7 +3,6 @@ package com.sidproj.nagpurdrs.screens;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,7 +43,6 @@ public class DrProfileActivity extends BaseActivity {
     private TextView feeTextView;
     private TextView verfiedViaTextView;
     private TextView drExperienceTextView;
-
 
     //dr profile object
     private DrProfileDo drProfileDo;
@@ -201,5 +199,10 @@ public class DrProfileActivity extends BaseActivity {
             star4.setImageResource(R.drawable.ic_star_filled_yellow);
             star5.setImageResource(R.drawable.ic_star_filled_yellow);
         }
+    }
+
+    @Override
+    public void onAPIResponse(int requestId, boolean isSuccess, String response, String errorString) {
+
     }
 }

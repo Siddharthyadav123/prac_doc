@@ -67,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/theam_light_button_drawable"
                 android:hint="Enter password name"
+                android:inputType="textPassword"
                 android:padding="7dp"
                 android:singleLine="true"
                 android:textColor="@color/White"
@@ -91,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/theam_light_button_drawable"
                 android:hint="Enter password agian"
+                android:inputType="textPassword"
                 android:padding="7dp"
                 android:singleLine="true"
                 android:textColor="@color/White"
@@ -183,7 +185,7 @@
                 android:textSize="15dp"
                 android:textStyle="bold" />
 
-            <EditText
+            <TextView
                 android:id="@+id/dobTextView"
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"

@@ -19,7 +19,7 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing" />
 
     <TextView
-        android:id="@+id/userFullName"
+        android:id="@+id/usrFullName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -27,9 +27,9 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/userEmailId"
+        android:id="@+id/usrMobileNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="siddharthdv80@gmail.com" />
+        android:text="09595063464" />
 
 </LinearLayout>

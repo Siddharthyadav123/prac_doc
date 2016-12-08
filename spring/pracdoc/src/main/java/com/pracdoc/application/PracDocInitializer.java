@@ -41,9 +41,9 @@ public class PracDocInitializer implements WebApplicationInitializer {
 
 		FilterRegistration.Dynamic fr1 = container.addFilter("corsFilter",
 				new SimpleCORSFilter());
-		 fr1.setInitParameter("encoding", "UTF-8");
-		 fr1.setInitParameter("forceEncoding", "true");
-		 fr1.addMappingForUrlPatterns(null, false, "/*");
+		fr1.setInitParameter("encoding", "UTF-8");
+		fr1.setInitParameter("forceEncoding", "true");
+		fr1.addMappingForUrlPatterns(null, false, "/*");
 
 	}
 

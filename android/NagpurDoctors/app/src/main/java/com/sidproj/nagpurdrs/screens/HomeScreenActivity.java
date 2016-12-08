@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.google.gson.Gson;
@@ -21,6 +22,7 @@ import com.sidproj.nagpurdrs.application.MyApplication;
 import com.sidproj.nagpurdrs.constants.RequestConstant;
 import com.sidproj.nagpurdrs.constants.URLConstants;
 import com.sidproj.nagpurdrs.entities.DrSpeciliazation;
+import com.sidproj.nagpurdrs.entities.UserProfileDo;
 import com.sidproj.nagpurdrs.volly.APICallback;
 import com.sidproj.nagpurdrs.volly.APIHandler;
 
@@ -34,19 +36,29 @@ public class HomeScreenActivity extends BaseActivity
     private SpecalizationListAdapter specalizationListAdapter;
     private ArrayList<DrSpeciliazation> drSpeciliazationArrayList = new ArrayList<>();
 
+    private UserProfileDo userProfileDo;
+
+
+    private TextView userFullName;
+    private TextView userMobileNum;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        userProfileDo = getIntent().getParcelableExtra("user_details");
         setupActionBar(false, "Nagpur Doctors");
         setupNavigationDrawer();
         initViews();
         registerEvents();
         showSpecializationListAdapter();
         requestDrSpecialization();
-
+        setInfoInUI();
         MyApplication.getInstance().enableGPS(this);
     }
+
 
     private void requestDrSpecialization() {
         APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_DR_SPECIALIZATION_LIST,
@@ -62,6 +74,14 @@ public class HomeScreenActivity extends BaseActivity
 
     private void initViews() {
         doctorCateogryListView = (ListView) findViewById(R.id.doctorCateogryListView);
+
+        userFullName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.usrFullName);
+        userMobileNum = (TextView) navigationView.getHeaderView(0).findViewById(R.id.usrMobileNum);
+    }
+
+    private void setInfoInUI() {
+        userFullName.setText(userProfileDo.getFull_name());
+        userMobileNum.setText(userProfileDo.getMobile_no());
     }
 
     private void registerEvents() {
@@ -76,13 +96,13 @@ public class HomeScreenActivity extends BaseActivity
     }
 
     private void setupNavigationDrawer() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -128,6 +148,8 @@ public class HomeScreenActivity extends BaseActivity
         } else if (id == R.id.feedback) {
 
         } else if (id == R.id.help) {
+
+        } else if (id == R.id.logout) {
 
         }
 

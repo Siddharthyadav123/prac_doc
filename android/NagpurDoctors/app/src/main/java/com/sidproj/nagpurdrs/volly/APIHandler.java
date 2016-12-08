@@ -136,6 +136,7 @@ public class APIHandler implements Response.Listener<Object>, Response.ErrorList
             }
         } catch (Exception e) {
             e.printStackTrace();
+            MyApplication.getInstance().showNormalDailog(context, e.getMessage());
             apiCallback.onAPIResponse(requestId, false, null, e.getMessage());
         }
 
