@@ -13,14 +13,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.constants.RequestConstant;
 import com.sidproj.nagpurdrs.constants.URLConstants;
 import com.sidproj.nagpurdrs.entities.UserProfileDo;
+import com.sidproj.nagpurdrs.model.LocalModel;
 import com.sidproj.nagpurdrs.volly.APIHandler;
 
 import org.json.JSONObject;
+
+import io.realm.RealmObject;
 
 public class LoginFlowActivity extends BaseActivity {
 
@@ -117,7 +123,7 @@ public class LoginFlowActivity extends BaseActivity {
 
 
         APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_USER_SIGNIN, Request.Method.POST, URLConstants.URL_POST_USER_SIGNIN
-                , true, "Please wait while signing in...", jsonObject.toString(), false);
+                , true, "Please wait while signing in...", jsonObject.toString());
         apiHandler.requestAPI();
     }
 
@@ -157,17 +163,37 @@ public class LoginFlowActivity extends BaseActivity {
         layoutToHide.startAnimation(fadeOut);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (loginFormContainer.getVisibility() == View.VISIBLE) {
+            swichFormsWithAnimation(loginOptionBtnContainer, loginFormContainer);
+        } else {
+            moveTaskToBack(true);
+        }
+    }
 
     @Override
     public void onAPIResponse(int requestId, boolean isSuccess, String response, String errorString) {
         if (isSuccess) {
             Toast.makeText(LoginFlowActivity.this, "SignIn Successful", Toast.LENGTH_SHORT).show();
 
-            Gson gson = new Gson();
-            UserProfileDo userProfileDo = gson.fromJson(response, UserProfileDo.class);
+            Gson gson = new GsonBuilder()
+                    .setExclusionStrategies(new ExclusionStrategy() {
+                        @Override
+                        public boolean shouldSkipField(FieldAttributes f) {
+                            return f.getDeclaringClass().equals(RealmObject.class);
+                        }
 
+                        @Override
+                        public boolean shouldSkipClass(Class<?> clazz) {
+                            return false;
+                        }
+                    })
+                    .create();
+
+            UserProfileDo userProfileDo = gson.fromJson(response, UserProfileDo.class);
+            LocalModel.getInstance().saveUserProfile(this, userProfileDo);
             Intent i = new Intent(LoginFlowActivity.this, HomeScreenActivity.class);
-            i.putExtra("user_details", userProfileDo);
             startActivity(i);
 
             finish();

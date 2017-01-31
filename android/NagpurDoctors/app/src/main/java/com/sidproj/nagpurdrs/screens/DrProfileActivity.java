@@ -122,7 +122,9 @@ public class DrProfileActivity extends BaseActivity {
         bookTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(DrProfileActivity.this, TimeSlotActivity.class);
+                intent.putExtra("key_dr_profile", drProfileDo);
+                startActivity(intent);
             }
         });
     }

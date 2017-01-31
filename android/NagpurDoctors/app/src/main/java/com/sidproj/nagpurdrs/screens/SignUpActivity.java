@@ -18,6 +18,8 @@ import com.sidproj.nagpurdrs.constants.URLConstants;
 import com.sidproj.nagpurdrs.entities.UserProfileDo;
 import com.sidproj.nagpurdrs.volly.APIHandler;
 
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -135,9 +137,10 @@ public class SignUpActivity extends BaseActivity {
 
     private void requestSignUp() {
         APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_USER_SINGUP, Request.Method.POST, URLConstants.URL_POST_USER_SIGNUP
-                , true, "Please wait while registering...", collectUserProfileInfo().toJSONString(), false);
+                , true, "Please wait while registering...", toJSONString(collectUserProfileInfo()));
         apiHandler.requestAPI();
     }
+
 
     private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -167,8 +170,25 @@ public class SignUpActivity extends BaseActivity {
         if (isSuccess) {
             finish();
             Toast.makeText(SignUpActivity.this, "Sign-Up Successfully !! Please login now.", Toast.LENGTH_SHORT).show();
-        } else {
-            showInfoDailog(this, errorString);
         }
+    }
+
+    public String toJSONString(UserProfileDo userProfileDo) {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("uname", userProfileDo.getUname());
+            jsonObject.put("pwd", userProfileDo.getPwd());
+            jsonObject.put("full_name", userProfileDo.getFull_name());
+            jsonObject.put("address", userProfileDo.getAddress());
+            jsonObject.put("mobile_no", userProfileDo.getMobile_no());
+            jsonObject.put("gender", userProfileDo.getGender());
+            jsonObject.put("dob", userProfileDo.getDob());
+            jsonObject.put("profile_pic_url", userProfileDo.getProfile_pic_url());
+            return jsonObject.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

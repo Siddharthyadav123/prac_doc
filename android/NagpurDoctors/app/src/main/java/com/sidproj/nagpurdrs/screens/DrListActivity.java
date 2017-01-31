@@ -32,7 +32,6 @@ public class DrListActivity extends BaseActivity implements APICallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dr_list);
-
         selectedSpecialization = getIntent().getParcelableExtra("selected_specialization");
         setupActionBar(true, selectedSpecialization.getName());
 
@@ -45,7 +44,7 @@ public class DrListActivity extends BaseActivity implements APICallback {
     private void requestDrProfiles() {
         String url = URLConstants.URL_GET_DR_PROFILE_BY_SPECIALIZATION + selectedSpecialization.getId();
         APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_DR_PROFILE_BY_SPEC_ID,
-                Request.Method.GET, url, true, "Loading " + selectedSpecialization.getName() + " List...", null, true);
+                Request.Method.GET, url, true, "Loading " + selectedSpecialization.getName() + " List...", null);
         apiHandler.requestAPI();
     }
 

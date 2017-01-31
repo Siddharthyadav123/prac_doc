@@ -1,66 +1,25 @@
 package com.sidproj.nagpurdrs.entities;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import org.json.JSONObject;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by siddharth on 12/6/2016.
  */
-public class UserProfileDo implements Parcelable {
-    public String uname;
-    public String pwd;
-    public String full_name;
-    public String address;
-    public String mobile_no;
-    public String gender;
-    public String dob;
-    public String profile_pic_url = null;
+public class UserProfileDo extends RealmObject {
+    @PrimaryKey
+    private String uname;
+    private String pwd;
+    private String full_name;
+    private String address;
+    private String mobile_no;
+    private String gender;
+    private String dob;
+    private String profile_pic_url = null;
 
     public UserProfileDo() {
 
     }
-
-    protected UserProfileDo(Parcel in) {
-        uname = in.readString();
-        pwd = in.readString();
-        full_name = in.readString();
-        address = in.readString();
-        mobile_no = in.readString();
-        gender = in.readString();
-        dob = in.readString();
-        profile_pic_url = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(uname);
-        dest.writeString(pwd);
-        dest.writeString(full_name);
-        dest.writeString(address);
-        dest.writeString(mobile_no);
-        dest.writeString(gender);
-        dest.writeString(dob);
-        dest.writeString(profile_pic_url);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<UserProfileDo> CREATOR = new Creator<UserProfileDo>() {
-        @Override
-        public UserProfileDo createFromParcel(Parcel in) {
-            return new UserProfileDo(in);
-        }
-
-        @Override
-        public UserProfileDo[] newArray(int size) {
-            return new UserProfileDo[size];
-        }
-    };
 
     public String getUname() {
         return uname;
@@ -127,27 +86,5 @@ public class UserProfileDo implements Parcelable {
         this.profile_pic_url = profile_pic_url;
     }
 
-    /**
-     * Method to form JSON request body
-     *
-     * @return
-     */
-    public String toJSONString() {
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("uname", uname);
-            jsonObject.put("pwd", pwd);
-            jsonObject.put("full_name", full_name);
-            jsonObject.put("address", address);
-            jsonObject.put("mobile_no", mobile_no);
-            jsonObject.put("gender", gender);
-            jsonObject.put("dob", dob);
-            jsonObject.put("profile_pic_url", profile_pic_url);
-            return jsonObject.toString();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

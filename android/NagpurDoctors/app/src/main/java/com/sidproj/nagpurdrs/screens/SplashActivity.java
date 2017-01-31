@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sidproj.nagpurdrs.R;
+import com.sidproj.nagpurdrs.entities.UserProfileDo;
+import com.sidproj.nagpurdrs.model.LocalModel;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -37,9 +39,16 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                UserProfileDo userProfileDo = LocalModel.getInstance().loadUserProfileIfExist(SplashActivity.this);
                 finish();
-                Intent i = new Intent(SplashActivity.this, LoginFlowActivity.class);
-                startActivity(i);
+                if (userProfileDo == null) {
+                    Intent i = new Intent(SplashActivity.this, LoginFlowActivity.class);
+                    startActivity(i);
+                } else {
+                    Intent i = new Intent(SplashActivity.this, HomeScreenActivity.class);
+                    startActivity(i);
+                }
+
             }
         }, 2000);
 

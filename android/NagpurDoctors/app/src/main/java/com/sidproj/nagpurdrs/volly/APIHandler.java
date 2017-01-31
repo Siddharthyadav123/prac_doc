@@ -7,16 +7,14 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.sidproj.nagpurdrs.application.MyApplication;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.Map;
 
-/**
- * Created by sid on 07/08/2016.
- */
 public class APIHandler implements Response.Listener<Object>, Response.ErrorListener {
     private Context context;
     private int requestId;
@@ -30,10 +28,9 @@ public class APIHandler implements Response.Listener<Object>, Response.ErrorList
     private String requestBody = null;
     private Map<String, String> headers = null;
     private boolean showToastOnRespone = true;
-    private boolean isResponseFormatIsArray = true;
 
     public APIHandler(Context context, APICallback apiCallback, int requestId, int methodType, String url,
-                      boolean showLoading, String loadingText, String requestBody, boolean isResponseFormatIsArray) {
+                      boolean showLoading, String loadingText, String requestBody) {
         this.context = context;
         this.apiCallback = apiCallback;
         this.requestId = requestId;
@@ -42,8 +39,6 @@ public class APIHandler implements Response.Listener<Object>, Response.ErrorList
         this.showLoading = showLoading;
         this.loadingText = loadingText;
         this.requestBody = requestBody;
-        this.isResponseFormatIsArray = isResponseFormatIsArray;
-//        this.headers = headers;
     }
 
     private void showLoading() {
@@ -123,24 +118,40 @@ public class APIHandler implements Response.Listener<Object>, Response.ErrorList
     public void onResponse(Object response) {
         hideLoading();
         try {
-            JSONObject jsonObject = new JSONObject(response.toString());
-            boolean isSuccess = jsonObject.getBoolean("success");
-            String msg = jsonObject.getString("msg");
+            System.out.println("[API] response body = " + response.toString());
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = parser.parse(response.toString()).getAsJsonObject();
+            boolean isSuccess = jsonObject.get("success").getAsBoolean();
+            String msg = parseMsg(jsonObject);
 
-            if (isResponseFormatIsArray) {
-                JSONArray resJsonArray = jsonObject.getJSONArray("response");
-                apiCallback.onAPIResponse(requestId, isSuccess, resJsonArray.toString(), msg);
+            if (isSuccess && jsonObject.has("response")) {
+                JsonElement jsonElement = jsonObject.get("response");
+                if (jsonElement instanceof JsonArray) {
+                    apiCallback.onAPIResponse(requestId, isSuccess, jsonElement.toString(), msg);
+                } else {
+                    apiCallback.onAPIResponse(requestId, isSuccess, jsonElement.toString(), msg);
+                }
             } else {
-                JSONObject resJsonObject = jsonObject.getJSONObject("response");
-                apiCallback.onAPIResponse(requestId, isSuccess, resJsonObject.toString(), msg);
+                MyApplication.getInstance().showNormalDailog(context, msg);
+                apiCallback.onAPIResponse(requestId, false, null, msg);
             }
         } catch (Exception e) {
             e.printStackTrace();
             MyApplication.getInstance().showNormalDailog(context, e.getMessage());
             apiCallback.onAPIResponse(requestId, false, null, e.getMessage());
         }
+    }
 
-
+    private String parseMsg(JsonObject jsonObject) {
+        String msg = "";
+        try {
+            if (jsonObject.has("msg") && jsonObject.get("msg").toString() != null) {
+                msg = jsonObject.get("msg").getAsString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return msg;
     }
 
     @Override

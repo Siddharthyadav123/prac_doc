@@ -3,6 +3,8 @@ package com.sidproj.nagpurdrs.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONObject;
+
 /**
  * Created by siddharth on 11/23/2016.
  */
@@ -274,5 +276,28 @@ public class DrProfileDo implements Parcelable {
         dest.writeString(dr_working_day);
         dest.writeString(specializationText);
 
+    }
+
+    /**
+     * { "dr_morning_time_slot_id": 1,
+     * "dr_afternoon_time_slot_id": 4,
+     * "dr_evening_time_slot_id": 5,
+     * "dr_night_time_slot_id": 10}
+     *
+     * @return
+     */
+    public String formJsonRequestBodyForTimeSlot() {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("dr_morning_time_slot_id", dr_morning_time_slot_id);
+            jsonObject.put("dr_afternoon_time_slot_id", dr_afternoon_time_slot_id);
+            jsonObject.put("dr_evening_time_slot_id", dr_evening_time_slot_id);
+            jsonObject.put("dr_night_time_slot_id", dr_night_time_slot_id);
+            return jsonObject.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
