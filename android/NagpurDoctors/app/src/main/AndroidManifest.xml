@@ -65,7 +65,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".screens.TimeSlotActivity"></activity>
+        <activity android:name=".screens.TimeSlotActivity" />
+        <activity android:name=".screens.AppointmentListActivity"></activity>
     </application>
 
 </manifest>

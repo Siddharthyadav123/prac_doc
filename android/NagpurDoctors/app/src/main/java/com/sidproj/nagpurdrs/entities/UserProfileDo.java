@@ -8,6 +8,7 @@ import io.realm.annotations.PrimaryKey;
  */
 public class UserProfileDo extends RealmObject {
     @PrimaryKey
+    private int id;
     private String uname;
     private String pwd;
     private String full_name;
@@ -19,6 +20,14 @@ public class UserProfileDo extends RealmObject {
 
     public UserProfileDo() {
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUname() {

@@ -59,11 +59,11 @@ CREATE TABLE `dr_appointment_table` (
   `date_time` datetime NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 /*Data for the table `dr_appointment_table` */
 
-insert  into `dr_appointment_table`(`id`,`patient_id`,`patient_name`,`dr_id`,`dr_name`,`date_time`,`status`) values (4,1,'siddharth',1,'Dr. Nikhalesh Nilawar','2016-10-21 16:00:59',3),(5,1,'siddharth',1,'Dr. Nikhalesh Nilawar','2016-11-21 16:00:59',2);
+insert  into `dr_appointment_table`(`id`,`patient_id`,`patient_name`,`dr_id`,`dr_name`,`date_time`,`status`) values (10,11,'akshay yadav',1,'Dr. Nikhalesh Nilawar','2017-02-01 15:30:00',1);
 
 /*Table structure for table `dr_specialization` */
 
@@ -107,12 +107,13 @@ CREATE TABLE `dr_table` (
   `dr_evening_time_slot_id` int(11) DEFAULT '-1',
   `dr_night_time_slot_id` int(11) DEFAULT '-1',
   `dr_working_day` varchar(255) NOT NULL DEFAULT 'ALL',
+  `dr_specialization` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `dr_table` */
 
-insert  into `dr_table`(`id`,`dr_uname`,`dr_pwd`,`dr_full_name`,`dr_specialization_id`,`dr_qualification`,`dr_experience`,`dr_consulation_fee`,`dr_contact_num`,`dr_profile_pic_url`,`dr_clinic_name`,`dr_clinic_address`,`dr_clinic_pics_url`,`dr_clinic_lat`,`dr_clinic_long`,`dr_clinic_rating`,`dr_verified_via`,`dr_services`,`dr_morning_time_slot_id`,`dr_afternoon_time_slot_id`,`dr_evening_time_slot_id`,`dr_night_time_slot_id`,`dr_working_day`) values (1,'niknilwar','123456','Dr. Nikhalesh Nilawar',1,'BDS, Fellowship in Implantology',17,200,'0959506346',NULL,'Nilawar Multispeciality dental clinic','1st floor, Sadoday Arcade, WHC Road. Landmark:Opposite Bank of Baroda',NULL,'','',4.5,'Medical License','Cosmetic Veneers, Dental Implant Fixing, Cosmetic/Aesthetic Dentistry',1,4,5,10,'M,T,W,T,F');
+insert  into `dr_table`(`id`,`dr_uname`,`dr_pwd`,`dr_full_name`,`dr_specialization_id`,`dr_qualification`,`dr_experience`,`dr_consulation_fee`,`dr_contact_num`,`dr_profile_pic_url`,`dr_clinic_name`,`dr_clinic_address`,`dr_clinic_pics_url`,`dr_clinic_lat`,`dr_clinic_long`,`dr_clinic_rating`,`dr_verified_via`,`dr_services`,`dr_morning_time_slot_id`,`dr_afternoon_time_slot_id`,`dr_evening_time_slot_id`,`dr_night_time_slot_id`,`dr_working_day`,`dr_specialization`) values (1,'niknilwar','123456','Dr. Nikhalesh Nilawar',1,'BDS, Fellowship in Implantology',17,200,'0959506346',NULL,'Nilawar Multispeciality dental clinic','1st floor, Sadoday Arcade, WHC Road. Landmark:Opposite Bank of Baroda',NULL,'','',4.5,'Medical License','Cosmetic Veneers, Dental Implant Fixing, Cosmetic/Aesthetic Dentistry',1,4,5,10,'M,T,W,T,F',NULL);
 
 /*Table structure for table `dr_time_slots` */
 
@@ -127,7 +128,7 @@ CREATE TABLE `dr_time_slots` (
 
 /*Data for the table `dr_time_slots` */
 
-insert  into `dr_time_slots`(`id`,`slot`,`timing`) values (1,'morning','08:00am,08:30am,09:00am,09:30am,10:00am,10:30am,11:00am,11:30am'),(2,'morning','09:00am,09:30am,10:00am,10:30am,11:00am,11:30am'),(3,'morning','10:00am,10:30am,11:00am,11:30am'),(4,'afternoon','12:00pm,12:30pm,01:00pm,01:30pm,02:00pm,02:30pm,03:00pm,03:30pm'),(5,'evening','04:00pm,04:30pm,05:00pm,05:30pm,06:00pm;06:30pm,07:00pm,07:30pm'),(6,'night','08:00pm,08:30pm,09:00pm,09:30pm,10:00pm,10:30pm'),(7,'night','08:00pm,08:30pm,09:00pm,09:30pm,10:00pm'),(8,'night','08:00pm,08:30pm,09:00pm,09:30pm'),(9,'night','08:00pm,08:30pm,09:00pm'),(10,'night','08:00pm,08:30pm');
+insert  into `dr_time_slots`(`id`,`slot`,`timing`) values (1,'morning','08:00 AM,08:30 AM,09:00 AM,09:30 AM,10:00 AM,10:30 AM,11:00 AM,11:30 AM'),(2,'morning','09:00 AM,09:30 AM,10:00 AM,10:30 AM,11:00 AM,11:30 AM'),(3,'morning','10:00 AM,10:30 AM,11:00 AM,11:30 AM'),(4,'afternoon','12:00 PM,12:30 PM,01:00 PM,01:30 PM,02:00 PM,02:30 PM,03:00 PM,03:30 PM'),(5,'evening','04:00 PM,04:30 PM,05:00 PM,05:30 PM,06:00 PM,06:30 PM,07:00 PM,07:30 PM'),(6,'night','08:00 PM,08:30 PM,09:00 PM,09:30 PM,10:00 PM,10:30 PM'),(7,'night','08:00 PM,08:30 PM,09:00 PM,09:30 PM,10:00 PM'),(8,'night','08:00 PM,08:30 PM,09:00 PM,09:30 PM'),(9,'night','08:00 PM,08:30 PM,09:00 PM'),(10,'night','08:00 PM,08:30 PM');
 
 /*Table structure for table `user_aleart_table` */
 
@@ -163,11 +164,11 @@ CREATE TABLE `user_table` (
   `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uname` (`uname`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 /*Data for the table `user_table` */
 
-insert  into `user_table`(`id`,`uname`,`pwd`,`address`,`full_name`,`gender`,`dob`,`mobile_no`,`profile_pic_url`,`created_on`,`updated_on`) values (1,'siddharth','12345678','ballarpur','siddharth suresh yadav','M','1990-12-30','9595063464',NULL,'2016-10-21 16:00:59','2016-10-21 16:00:59'),(10,'ram','1111','ballarpur','ram kumar yadav','','2016-11-03','9595868633',NULL,'2016-11-02 15:39:33','2016-11-02 15:58:15'),(11,'akshay','1111','ballarpur','akshay yadav','M','1990-12-30','9595063464',NULL,'2016-11-03 16:02:01','2016-11-03 16:02:01');
+insert  into `user_table`(`id`,`uname`,`pwd`,`address`,`full_name`,`gender`,`dob`,`mobile_no`,`profile_pic_url`,`created_on`,`updated_on`) values (1,'siddharth','12345678','ballarpur','siddharth suresh yadav','M','1990-12-30','9595063464',NULL,'2016-10-21 16:00:59','2016-10-21 16:00:59'),(10,'ram','1111','ballarpur','ram kumar yadav','M','2016-11-03','9595868633',NULL,'2016-11-02 15:39:33','2016-11-02 15:58:15'),(11,'akshay','1111','ballarpur','akshay yadav','M','1990-12-30','9595063464',NULL,'2016-11-03 16:02:01','2016-11-03 16:02:01'),(12,'tom','12345','tytyt','tom jerry','F','1990-12-30','9595068989',NULL,'2016-12-08 14:10:27','2016-12-08 14:10:27'),(13,'nik','444444','ghhjiyvv hh','nik ram','F','2016-12-08','959506366',NULL,'2016-12-08 14:27:54','2016-12-08 14:27:54'),(14,'shital','ssssssss','ttt','shital mahajan','M','2016-12-08','9595063422',NULL,'2016-12-08 14:40:41','2016-12-08 14:40:41');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

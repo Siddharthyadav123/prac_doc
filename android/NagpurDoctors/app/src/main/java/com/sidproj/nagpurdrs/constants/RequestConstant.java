@@ -11,4 +11,5 @@ public class RequestConstant {
     public static final int REQUEST_USER_SIGNIN = 3;
 
     public static final int REQUEST_DR_TIME_SLOT = 4;
+    public static final int REQUEST_DR_TAKE_APPOINTMENT = 5;
 }

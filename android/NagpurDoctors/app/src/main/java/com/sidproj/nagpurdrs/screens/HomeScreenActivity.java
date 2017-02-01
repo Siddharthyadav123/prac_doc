@@ -131,10 +131,6 @@ public class HomeScreenActivity extends BaseActivity
                 return false;
             case R.id.aboutUs:
                 return false;
-            case R.id.feedback:
-                return false;
-            case R.id.help:
-                return false;
             case R.id.logout:
                 showLogoutDailog();
                 return false;

@@ -19,12 +19,12 @@
         android:layout_below="@+id/topBar"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="Select an Appointment Date:"
+        android:text="Selected Date:"
         android:textColor="@color/Black"
-        android:textSize="15dp" />
+        android:textSize="13dp" />
 
     <TextView
-        android:id="@+id/timeSlotTextView"
+        android:id="@+id/dateSlotTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/appointmentDateLabel"
@@ -36,6 +36,33 @@
         android:textColor="@color/White"
         android:textColorHint="@color/WhiteSmoke"
         android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/appointmentTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateSlotTextView"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Selected Time:"
+        android:textColor="@color/Black"
+        android:textSize="13dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/timeSlotTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateSlotTextView"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@+id/appointmentTimeLabel"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="@color/TheamDarkColor"
+        android:textColorHint="@color/WhiteSmoke"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <View
         android:id="@+id/seprator"
@@ -63,6 +90,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/tvMorningSlotLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Morning Slots:"
@@ -72,6 +100,7 @@
                     android:id="@+id/llMorningSlots"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvMorningSlotLabel"
                     android:orientation="vertical">
 
                 </LinearLayout>
@@ -85,6 +114,7 @@
                 android:layout_marginTop="20dp">
 
                 <TextView
+                    android:id="@+id/tvAfternoonSlotLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Afternoon Slots:"
@@ -94,6 +124,7 @@
                     android:id="@+id/llAfterNoonSlots"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvAfternoonSlotLabel"
                     android:orientation="vertical">
 
                 </LinearLayout>
@@ -108,6 +139,7 @@
                 android:layout_marginTop="20dp">
 
                 <TextView
+                    android:id="@+id/tbEveningSlotLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Evening Slots:"
@@ -117,6 +149,7 @@
                     android:id="@+id/llEveningSlots"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tbEveningSlotLabel"
                     android:orientation="vertical">
 
                 </LinearLayout>
@@ -127,9 +160,11 @@
                 android:id="@+id/rlNightSlots"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp">
 
                 <TextView
+                    android:id="@+id/tvNightSlotLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Night Slots:"
@@ -139,6 +174,7 @@
                     android:id="@+id/llNightSlots"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvNightSlotLabel"
                     android:orientation="vertical">
 
                 </LinearLayout>
@@ -155,11 +191,12 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="?android:selectableItemBackground"
+        android:background="@color/TheamDarkColor"
         android:gravity="center"
         android:text="Take Appointment"
         android:textAllCaps="false"
         android:textColor="@color/White"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:visibility="gone" />
 
 </RelativeLayout>
