@@ -22,6 +22,7 @@ import com.sidproj.nagpurdrs.adapters.SpecalizationListAdapter;
 import com.sidproj.nagpurdrs.application.MyApplication;
 import com.sidproj.nagpurdrs.constants.RequestConstant;
 import com.sidproj.nagpurdrs.constants.URLConstants;
+import com.sidproj.nagpurdrs.entities.AppointmentDo;
 import com.sidproj.nagpurdrs.entities.DrSpeciliazation;
 import com.sidproj.nagpurdrs.entities.UserProfileDo;
 import com.sidproj.nagpurdrs.model.LocalModel;
@@ -58,6 +59,12 @@ public class HomeScreenActivity extends BaseActivity
         requestDrSpecialization();
         setInfoInUI();
         MyApplication.getInstance().enableGPS(this);
+        MyApplication.getInstance().requestNotification();
+    }
+
+    @Override
+    protected void onNewNotificationArrived(ArrayList<AppointmentDo> newAppointements) {
+
     }
 
 
@@ -128,6 +135,8 @@ public class HomeScreenActivity extends BaseActivity
 
         switch (item.getItemId()) {
             case R.id.yourAppointments:
+                Intent i = new Intent(HomeScreenActivity.this, AppointmentListActivity.class);
+                startActivity(i);
                 return false;
             case R.id.aboutUs:
                 return false;
@@ -147,7 +156,7 @@ public class HomeScreenActivity extends BaseActivity
         builder1.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        LocalModel.getInstance().removeUserProfileOnLogout(HomeScreenActivity.this);
+                        LocalModel.getInstance().removeUserProfileAndAppointmentsInfoOnLogout(HomeScreenActivity.this);
                         dialog.cancel();
                         Intent i = new Intent(HomeScreenActivity.this, SplashActivity.class);
                         startActivity(i);

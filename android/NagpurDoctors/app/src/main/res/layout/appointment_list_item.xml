@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/TheamDarkColor"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/labelDrName"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Doctor Name:"
+            android:textColor="@color/White" />
+
+        <TextView
+            android:id="@+id/drNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/labelDrName"
+            android:text="Dr. Ramesh"
+            android:textColor="@color/Wheat"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/labelAppointmentDate"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelDrName"
+            android:layout_marginTop="5dp"
+            android:gravity="right"
+            android:text="Appointment Date:"
+            android:textColor="@color/White" />
+
+        <TextView
+            android:id="@+id/appointmentDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelDrName"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/labelAppointmentDate"
+            android:text="12/2/2017"
+            android:textColor="@color/Wheat"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/labelStatus"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelAppointmentDate"
+            android:layout_marginTop="5dp"
+            android:gravity="right"
+            android:text="Status:"
+            android:textColor="@color/White" />
+
+        <TextView
+            android:id="@+id/appointmentStatusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelAppointmentDate"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/labelStatus"
+            android:text="pending"
+            android:textAllCaps="true"
+            android:textColor="@color/Wheat"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

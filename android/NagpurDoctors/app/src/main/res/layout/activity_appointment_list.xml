@@ -3,6 +3,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/TheamLightColor"
     tools:context="com.sidproj.nagpurdrs.screens.AppointmentListActivity">
+
+    <include
+        android:id="@+id/topBar"
+        layout="@layout/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/tabs_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topBar"
+        android:layout_marginTop="0.5dp">
+
+        <TextView
+            android:id="@+id/tv_pending"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0.5dp"
+            android:layout_marginRight="0.5dp"
+            android:layout_weight="1"
+            android:background="@color/TheamDarkColor"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Pending"
+            android:textColor="@color/White"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/tv_approved"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0.5dp"
+            android:layout_marginRight="0.5dp"
+            android:layout_weight="1"
+            android:background="@color/TheamDarkColor"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Approved"
+            android:textColor="@color/White"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/tv_completed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0.5dp"
+            android:layout_marginRight="0.5dp"
+            android:layout_weight="1"
+            android:background="@color/TheamDarkColor"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Completed"
+            android:textColor="@color/White"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/tv_cancelled"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0.5dp"
+            android:layout_marginRight="0.5dp"
+            android:layout_weight="1"
+            android:background="@color/TheamDarkColor"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Cancelled"
+            android:textColor="@color/White"
+            android:textSize="13dp" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_appointments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tabs_layout"
+        android:layout_marginTop="0.5dp"></ListView>
+
+    <TextView
+        android:id="@+id/tv_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="You have no pending appointments." />
 
 </RelativeLayout>

@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.constants.RequestConstant;
 import com.sidproj.nagpurdrs.constants.URLConstants;
+import com.sidproj.nagpurdrs.entities.AppointmentDo;
 import com.sidproj.nagpurdrs.entities.DrProfileDo;
 import com.sidproj.nagpurdrs.entities.DrTimeSlotsDo;
 import com.sidproj.nagpurdrs.entities.UserProfileDo;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -65,6 +67,11 @@ public class TimeSlotActivity extends BaseActivity {
         initViews();
         registerEvents();
         requestTimeSlots();
+    }
+
+    @Override
+    protected void onNewNotificationArrived(ArrayList<AppointmentDo> newAppointements) {
+
     }
 
     private void requestTimeSlots() {

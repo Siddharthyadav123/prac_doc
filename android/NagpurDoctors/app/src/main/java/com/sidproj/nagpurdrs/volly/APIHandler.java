@@ -95,7 +95,6 @@ public class APIHandler implements Response.Listener<Object>, Response.ErrorList
         GenericRequest genericRequest = new GenericRequest(methodType, url, requestBody, this, this, null);
         MyApplication.getInstance().addToRequestQueue(genericRequest, requestId);
 
-
     }
 
 

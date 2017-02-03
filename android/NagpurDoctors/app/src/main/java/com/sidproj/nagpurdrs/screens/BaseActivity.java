@@ -3,6 +3,7 @@ package com.sidproj.nagpurdrs.screens;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,7 +16,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sidproj.nagpurdrs.R;
+import com.sidproj.nagpurdrs.application.MyApplication;
+import com.sidproj.nagpurdrs.entities.AppointmentDo;
+import com.sidproj.nagpurdrs.model.LocalModel;
 import com.sidproj.nagpurdrs.volly.APICallback;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
 
 
 /**
@@ -32,8 +41,25 @@ public abstract class BaseActivity extends AppCompatActivity implements APICallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        MyApplication.getInstance().setCurrentActivity(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MyApplication.getInstance().setCurrentActivity(null);
     }
 
     public void setupActionBar(boolean needBackBtn, String title) {
@@ -60,8 +86,24 @@ public abstract class BaseActivity extends AppCompatActivity implements APICallb
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
+        notificationImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(BaseActivity.this, AppointmentListActivity.class);
+                startActivity(i);
+            }
+        });
 
+        notificationCount.setText(LocalModel.getInstance().getAppointmentList().size() + "");
     }
+
+    @Subscribe
+    public void onCameraEvent(ArrayList<AppointmentDo> newAppointements) {
+        notificationCount.setText(newAppointements.size() + "");
+        onNewNotificationArrived(newAppointements);
+    }
+
+    protected abstract void onNewNotificationArrived(ArrayList<AppointmentDo> newAppointements);
 
     public void hideNotificationBtn() {
         notificationImageView.setVisibility(View.GONE);

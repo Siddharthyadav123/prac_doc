@@ -2,7 +2,10 @@ package com.sidproj.nagpurdrs.model;
 
 import android.content.Context;
 
+import com.sidproj.nagpurdrs.entities.AppointmentDo;
 import com.sidproj.nagpurdrs.entities.UserProfileDo;
+
+import java.util.ArrayList;
 
 import io.realm.Realm;
 
@@ -13,6 +16,7 @@ public class LocalModel {
     public static LocalModel instance = null;
 
     private UserProfileDo userProfileDo = null;
+    private ArrayList<AppointmentDo> appointmentList = new ArrayList<>();
 
     public static LocalModel getInstance() {
         if (instance == null) {
@@ -34,12 +38,13 @@ public class LocalModel {
         myRealm.commitTransaction();
     }
 
-    public void removeUserProfileOnLogout(Context context) {
+    public void removeUserProfileAndAppointmentsInfoOnLogout(Context context) {
         Realm myRealm = Realm.getInstance(context);
         myRealm.beginTransaction();
         UserProfileDo userProfileDo = myRealm.where(UserProfileDo.class).findFirst();
         userProfileDo.removeFromRealm();
         myRealm.commitTransaction();
+        appointmentList.clear();
     }
 
     public UserProfileDo getUserProfileDo() {
@@ -48,5 +53,13 @@ public class LocalModel {
 
     public void setUserProfileDo(UserProfileDo userProfileDo) {
         this.userProfileDo = userProfileDo;
+    }
+
+    public ArrayList<AppointmentDo> getAppointmentList() {
+        return appointmentList;
+    }
+
+    public void setAppointmentList(ArrayList<AppointmentDo> appointmentList) {
+        this.appointmentList = appointmentList;
     }
 }

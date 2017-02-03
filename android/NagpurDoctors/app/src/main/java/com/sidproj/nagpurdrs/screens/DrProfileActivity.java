@@ -13,7 +13,10 @@ import android.widget.Toast;
 
 import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.application.MyApplication;
+import com.sidproj.nagpurdrs.entities.AppointmentDo;
 import com.sidproj.nagpurdrs.entities.DrProfileDo;
+
+import java.util.ArrayList;
 
 public class DrProfileActivity extends BaseActivity {
     private ImageView drImageView;
@@ -59,6 +62,11 @@ public class DrProfileActivity extends BaseActivity {
         registerEvents();
         setDrInfoInUI();
         MyApplication.getInstance().enableGPS(this);
+    }
+
+    @Override
+    protected void onNewNotificationArrived(ArrayList<AppointmentDo> newAppointements) {
+
     }
 
     private void initViews() {

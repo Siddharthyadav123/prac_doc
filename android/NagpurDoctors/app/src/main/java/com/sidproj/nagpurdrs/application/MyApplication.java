@@ -5,41 +5,68 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.multidex.MultiDex;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sidproj.nagpurdrs.R;
+import com.sidproj.nagpurdrs.constants.RequestConstant;
+import com.sidproj.nagpurdrs.constants.URLConstants;
+import com.sidproj.nagpurdrs.entities.AppointmentDo;
+import com.sidproj.nagpurdrs.entities.UserProfileDo;
 import com.sidproj.nagpurdrs.location.LocationModel;
+import com.sidproj.nagpurdrs.model.LocalModel;
+import com.sidproj.nagpurdrs.screens.SplashActivity;
+import com.sidproj.nagpurdrs.volly.APICallback;
+import com.sidproj.nagpurdrs.volly.APIHandler;
 import com.sidproj.nagpurdrs.volly.LruBitmapCache;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by siddharth on 7/26/2016.
  */
-public class MyApplication extends Application {
+public class MyApplication extends Application implements APICallback {
     public static MyApplication myApplication = null;
 
     public static final String TAG = MyApplication.class
             .getSimpleName();
-
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
-
     public LocationModel locationModel;
+    private UserProfileDo userProfileDo;
+
+    private Activity currentActivity;
 
     public static MyApplication getInstance() {
         return myApplication;
@@ -55,6 +82,29 @@ public class MyApplication extends Application {
         locationModel = new LocationModel(this);
 
     }
+
+    public void requestNotification() {
+        userProfileDo = LocalModel.getInstance().getUserProfileDo();
+
+        if (userProfileDo != null) {
+            String url = URLConstants.URL_GET_APPOINTMENT_LIST;
+            url = url.replace("{user_id}", userProfileDo.getId() + "");
+            APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_GET_APPOINTMENT_LIST,
+                    Request.Method.GET, url, false, "Loading Appointments...", null);
+            apiHandler.requestAPI();
+        }
+
+        //this will keep on calling this method recursively after a time interval
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                requestNotification();
+            }
+        }, 10000);
+
+
+    }
+
 
     public void enableGPS(final Activity activity) {
         float sourceLat = locationModel.getLatitude();
@@ -243,6 +293,54 @@ public class MyApplication extends Application {
         alert11.show();
     }
 
+    @Override
+    public void onAPIResponse(int requestId, boolean isSuccess, String response, String errorString) {
+        if (isSuccess && response != null) {
+            System.out.println(">>Appointment response >> " + response.toString());
+            Gson gson = new Gson();
+            ArrayList<AppointmentDo> appointmentDos = gson.fromJson(response.toString(), new TypeToken<ArrayList<AppointmentDo>>() {
+            }.getType());
+            checkIfAnyNewNotficationArrives(appointmentDos);
+        }
+    }
+
+    private void checkIfAnyNewNotficationArrives(ArrayList<AppointmentDo> newAppointments) {
+        boolean anyNewAppointment = false;
+        ArrayList<AppointmentDo> oldAppointments = LocalModel.getInstance().getAppointmentList();
+        if (oldAppointments != null && newAppointments != null) {
+            for (int i = 0; i < newAppointments.size(); i++) {
+                boolean isFoundInOldOne = false;
+                AppointmentDo newAppointment = newAppointments.get(i);
+
+                for (int j = 0; j < oldAppointments.size(); j++) {
+                    if (oldAppointments.get(j).getId() == newAppointment.getId()) {
+                        if (oldAppointments.get(j).getStatus() == newAppointment.getStatus()) {
+                            isFoundInOldOne = true;
+                            break;
+                        }
+                    }
+                }
+                if (!isFoundInOldOne) {
+                    anyNewAppointment = true;
+                    showLocalNotification(newAppointment);
+                    if (currentActivity != null) {
+                        showSnackBar(currentActivity, formNotificationMsgBasedOnStatus(newAppointment));
+                    }
+                }
+            }
+        } else if (newAppointments != null) {
+            for (int i = 0; i < newAppointments.size(); i++) {
+                showLocalNotification(newAppointments.get(i));
+            }
+        }
+
+        LocalModel.getInstance().setAppointmentList(newAppointments);
+
+        if (anyNewAppointment) {
+            EventBus.getDefault().post(newAppointments);
+        }
+    }
+
 
     public interface DailogCallback {
         public void onDailogYesClick();
@@ -251,20 +349,105 @@ public class MyApplication extends Application {
     }
 
     public void showNormalDailog(Context context, String bodyText) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-        builder1.setMessage(bodyText);
-        builder1.setCancelable(true);
+        try {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+            builder1.setMessage(bodyText);
+            builder1.setCancelable(true);
 
-        builder1.setPositiveButton("Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+            builder1.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
 
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
+
+    public void showLocalNotification(AppointmentDo appointmentDo) {
+        if (appointmentDo.getStatus() == AppointmentDo.STATUS_PENDING
+                || appointmentDo.getStatus() == AppointmentDo.STATUS_PROCESSED) {
+            return;
+        }
+        String title = "Nagpur Doctors";
+        String description = formNotificationMsgBasedOnStatus(appointmentDo);
+
+
+        Intent intent = new Intent(MyApplication.getInstance(), SplashActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent contentIntent = PendingIntent.getActivity(MyApplication.getInstance(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder b = new NotificationCompat.Builder(MyApplication.getInstance());
+        Bitmap largeIcon = BitmapFactory.decodeResource(MyApplication.getInstance().getResources(), R.drawable.dr_logo);
+
+        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
+        bigTextStyle.setBigContentTitle(title);
+        bigTextStyle.bigText(description);
+
+        b.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.dr_logo)
+                .setLargeIcon(largeIcon)
+                .setTicker(title + ": " + description)
+                .setContentTitle(title)
+                .setStyle(bigTextStyle)
+                .setContentText(description)
+                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
+                .setContentIntent(contentIntent);
+
+
+        NotificationManager notificationManager = (NotificationManager) MyApplication.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(generateRandomNum(), b.build());
+    }
+
+    public void showSnackBar(Activity activity, String textToShow) {
+        Snackbar snack = Snackbar.make(activity.findViewById(android.R.id.content), textToShow, Snackbar.LENGTH_LONG);
+        View view = snack.getView();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+        params.gravity = Gravity.TOP;
+        view.setLayoutParams(params);
+        snack.show();
+    }
+
+    public int generateRandomNum() {
+        int min = 1;
+        int max = 100;
+        Random r = new Random();
+        return r.nextInt(max - min + 1) + min;
+    }
+
+    private String formNotificationMsgBasedOnStatus(AppointmentDo appointmentDo) {
+        String msg = "";
+        switch (appointmentDo.getStatus()) {
+            case AppointmentDo.STATUS_PENDING:
+                msg = "Your Appointment still in pending. Wait for doctor to approve.";
+                break;
+            case AppointmentDo.STATUS_APPROVED:
+                msg = "Congrats your Appointment of " + appointmentDo.getDr_name() + " has been approved. Please be present on " + appointmentDo.getDate_time();
+                break;
+            case AppointmentDo.STATUS_CANCELLED:
+                msg = "Sorry your Appointment of " + appointmentDo.getDr_name() + " has been cancelled. Please try to take new appointment or contact doctor";
+                break;
+            case AppointmentDo.STATUS_PROCESSED:
+                msg = "Appointment of " + appointmentDo.getDr_name() + " has been already processed. Thanks.";
+                break;
+        }
+        return msg;
+    }
+
+    public Activity getCurrentActivity() {
+        return currentActivity;
+    }
+
+    public void setCurrentActivity(Activity currentActivity) {
+        this.currentActivity = currentActivity;
+    }
 }
 

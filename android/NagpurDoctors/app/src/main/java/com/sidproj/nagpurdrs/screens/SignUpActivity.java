@@ -15,11 +15,13 @@ import com.android.volley.Request;
 import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.constants.RequestConstant;
 import com.sidproj.nagpurdrs.constants.URLConstants;
+import com.sidproj.nagpurdrs.entities.AppointmentDo;
 import com.sidproj.nagpurdrs.entities.UserProfileDo;
 import com.sidproj.nagpurdrs.volly.APIHandler;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -49,6 +51,11 @@ public class SignUpActivity extends BaseActivity {
         hideNotificationBtn();
         initViews();
         registerEvents();
+    }
+
+    @Override
+    protected void onNewNotificationArrived(ArrayList<AppointmentDo> newAppointements) {
+
     }
 
     private void initViews() {

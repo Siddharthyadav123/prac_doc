@@ -28,7 +28,7 @@ CREATE TABLE `appoinment_status_constants` (
 
 /*Data for the table `appoinment_status_constants` */
 
-insert  into `appoinment_status_constants`(`id`,`status`) values (1,'PENDING'),(2,'APPROVED'),(3,'CANCELLED'),(4,'PROCESSED');
+insert  into `appoinment_status_constants`(`id`,`status`) values (1,'PENDING'),(2,'APPROVED'),(3,'PROCESSED'),(4,'CANCELLED');
 
 /*Table structure for table `dr_aleart_table` */
 
@@ -59,11 +59,11 @@ CREATE TABLE `dr_appointment_table` (
   `date_time` datetime NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 /*Data for the table `dr_appointment_table` */
 
-insert  into `dr_appointment_table`(`id`,`patient_id`,`patient_name`,`dr_id`,`dr_name`,`date_time`,`status`) values (10,11,'akshay yadav',1,'Dr. Nikhalesh Nilawar','2017-02-01 15:30:00',1);
+insert  into `dr_appointment_table`(`id`,`patient_id`,`patient_name`,`dr_id`,`dr_name`,`date_time`,`status`) values (14,11,'akshay yadav',1,'Dr. Nikhalesh Nilawar','2017-02-03 10:30:00',2),(15,11,'akshay yadav',1,'Dr. Nikhalesh Nilawar','2017-02-03 14:30:00',1),(16,11,'akshay yadav',1,'Dr. Nikhalesh Nilawar','2017-02-03 09:00:00',1),(17,11,'akshay yadav',1,'Dr. Nikhalesh Nilawar','2017-02-03 20:30:00',1),(18,11,'akshay yadav',1,'Dr. Nikhalesh Nilawar','2017-03-25 10:30:00',1);
 
 /*Table structure for table `dr_specialization` */
 

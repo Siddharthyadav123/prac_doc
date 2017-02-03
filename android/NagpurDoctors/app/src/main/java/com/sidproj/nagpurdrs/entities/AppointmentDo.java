@@ -4,6 +4,11 @@ package com.sidproj.nagpurdrs.entities;
  * Created by siddharth on 2/1/2017.
  */
 public class AppointmentDo {
+    public static final int STATUS_PENDING = 1;
+    public static final int STATUS_APPROVED = 2;
+    public static final int STATUS_PROCESSED = 3;
+    public static final int STATUS_CANCELLED = 4;
+
 
     public int id;
     public int patient_id;

@@ -20,11 +20,14 @@ import com.google.gson.GsonBuilder;
 import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.constants.RequestConstant;
 import com.sidproj.nagpurdrs.constants.URLConstants;
+import com.sidproj.nagpurdrs.entities.AppointmentDo;
 import com.sidproj.nagpurdrs.entities.UserProfileDo;
 import com.sidproj.nagpurdrs.model.LocalModel;
 import com.sidproj.nagpurdrs.volly.APIHandler;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import io.realm.RealmObject;
 
@@ -54,6 +57,11 @@ public class LoginFlowActivity extends BaseActivity {
         setContentView(R.layout.activity_login_flow);
         initViews();
         registerEvents();
+    }
+
+    @Override
+    protected void onNewNotificationArrived(ArrayList<AppointmentDo> newAppointements) {
+
     }
 
     private void initViews() {

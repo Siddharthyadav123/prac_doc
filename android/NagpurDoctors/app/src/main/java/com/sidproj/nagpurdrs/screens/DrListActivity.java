@@ -13,6 +13,7 @@ import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.adapters.DrListAdapter;
 import com.sidproj.nagpurdrs.constants.RequestConstant;
 import com.sidproj.nagpurdrs.constants.URLConstants;
+import com.sidproj.nagpurdrs.entities.AppointmentDo;
 import com.sidproj.nagpurdrs.entities.DrProfileDo;
 import com.sidproj.nagpurdrs.entities.DrSpeciliazation;
 import com.sidproj.nagpurdrs.volly.APICallback;
@@ -39,6 +40,11 @@ public class DrListActivity extends BaseActivity implements APICallback {
         registerEvents();
         setDrListAdapter();
         requestDrProfiles();
+    }
+
+    @Override
+    protected void onNewNotificationArrived(ArrayList<AppointmentDo> newAppointements) {
+
     }
 
     private void requestDrProfiles() {
