@@ -3,9 +3,6 @@ package com.sidproj.nagpurdrs.entities;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-/**
- * Created by siddharth on 12/6/2016.
- */
 public class UserProfileDo extends RealmObject {
     @PrimaryKey
     private int id;

@@ -147,4 +147,8 @@
 
     <color name="TheamDarkColor">#1a4047</color>
     <color name="TheamLightColor">#87ACAD</color>
+
+    <color name="fbChatBlue">#0085FE</color>
+
+
 </resources>

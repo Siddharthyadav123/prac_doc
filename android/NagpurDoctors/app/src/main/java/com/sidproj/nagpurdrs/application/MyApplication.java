@@ -40,6 +40,7 @@ import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.constants.RequestConstant;
 import com.sidproj.nagpurdrs.constants.URLConstants;
 import com.sidproj.nagpurdrs.entities.AppointmentDo;
+import com.sidproj.nagpurdrs.entities.DoctorLoginProfileDo;
 import com.sidproj.nagpurdrs.entities.UserProfileDo;
 import com.sidproj.nagpurdrs.location.LocationModel;
 import com.sidproj.nagpurdrs.model.LocalModel;
@@ -53,9 +54,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by siddharth on 7/26/2016.
- */
 public class MyApplication extends Application implements APICallback {
     public static MyApplication myApplication = null;
 
@@ -64,9 +62,13 @@ public class MyApplication extends Application implements APICallback {
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     public LocationModel locationModel;
+
     private UserProfileDo userProfileDo;
+    private DoctorLoginProfileDo doctorLoginProfileDo;
 
     private Activity currentActivity;
+    private Handler patientNotificationHandler = null;
+    private Handler drNotificationHandler = null;
 
     public static MyApplication getInstance() {
         return myApplication;
@@ -83,7 +85,7 @@ public class MyApplication extends Application implements APICallback {
 
     }
 
-    public void requestNotification() {
+    public void requestPatientNotification() {
         userProfileDo = LocalModel.getInstance().getUserProfileDo();
 
         if (userProfileDo != null) {
@@ -92,18 +94,55 @@ public class MyApplication extends Application implements APICallback {
             APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_GET_APPOINTMENT_LIST,
                     Request.Method.GET, url, false, "Loading Appointments...", null);
             apiHandler.requestAPI();
+
+            //this will keep on calling this method recursively after a time interval
+            if (patientNotificationHandler == null)
+                patientNotificationHandler = new Handler();
+
+            patientNotificationHandler.postDelayed(patientNotificationRunnable, 10000);
         }
-
-        //this will keep on calling this method recursively after a time interval
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                requestNotification();
-            }
-        }, 10000);
-
-
     }
+
+    public void requestDrNotification() {
+        doctorLoginProfileDo = LocalModel.getInstance().getDoctorLoginProfileDo();
+
+        if (doctorLoginProfileDo != null) {
+            String url = URLConstants.URL_GET_DR_APPOINTMENT_LIST;
+            url = url.replace("{dr_id}", doctorLoginProfileDo.getId() + "");
+            APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_GET_DR_APPOINTMENT_LIST,
+                    Request.Method.GET, url, false, "Loading Appointments...", null);
+            apiHandler.requestAPI();
+
+            //this will keep on calling this method recursively after a time interval
+            if (drNotificationHandler == null)
+                drNotificationHandler = new Handler();
+
+            drNotificationHandler.postDelayed(drNotificationRunnable, 10000);
+        }
+    }
+
+    public void stopNotificationCheck() {
+        if (patientNotificationHandler != null) {
+            patientNotificationHandler.removeCallbacks(patientNotificationRunnable);
+        }
+        if (drNotificationHandler != null) {
+            drNotificationHandler.removeCallbacks(drNotificationRunnable);
+        }
+    }
+
+    private Runnable patientNotificationRunnable = new Runnable() {
+        @Override
+        public void run() {
+            requestPatientNotification();
+        }
+    };
+
+    private Runnable drNotificationRunnable = new Runnable() {
+        @Override
+        public void run() {
+            requestDrNotification();
+        }
+    };
 
 
     public void enableGPS(final Activity activity) {
@@ -295,12 +334,61 @@ public class MyApplication extends Application implements APICallback {
 
     @Override
     public void onAPIResponse(int requestId, boolean isSuccess, String response, String errorString) {
-        if (isSuccess && response != null) {
-            System.out.println(">>Appointment response >> " + response.toString());
-            Gson gson = new Gson();
-            ArrayList<AppointmentDo> appointmentDos = gson.fromJson(response.toString(), new TypeToken<ArrayList<AppointmentDo>>() {
-            }.getType());
-            checkIfAnyNewNotficationArrives(appointmentDos);
+        switch (requestId) {
+            case RequestConstant.REQUEST_GET_APPOINTMENT_LIST:
+                if (isSuccess && response != null) {
+                    System.out.println(">>Appointment response >> " + response.toString());
+                    Gson gson = new Gson();
+                    ArrayList<AppointmentDo> appointmentDos = gson.fromJson(response.toString(), new TypeToken<ArrayList<AppointmentDo>>() {
+                    }.getType());
+                    checkIfAnyNewNotficationArrives(appointmentDos);
+                }
+                break;
+            case RequestConstant.REQUEST_GET_DR_APPOINTMENT_LIST:
+                if (isSuccess && response != null) {
+                    System.out.println(">>Dr Appointment response >> " + response.toString());
+                    Gson gson = new Gson();
+                    ArrayList<AppointmentDo> appointmentDos = gson.fromJson(response.toString(), new TypeToken<ArrayList<AppointmentDo>>() {
+                    }.getType());
+                    checkIfAnyNewNotficationArrivesForDr(appointmentDos);
+                }
+                break;
+        }
+
+    }
+
+    private void checkIfAnyNewNotficationArrivesForDr(ArrayList<AppointmentDo> newAppointments) {
+        boolean anyNewAppointment = false;
+        ArrayList<AppointmentDo> oldAppointments = LocalModel.getInstance().getAppointmentList();
+        if (oldAppointments != null && newAppointments != null) {
+            for (int i = 0; i < newAppointments.size(); i++) {
+                boolean isFoundInOldOne = false;
+                AppointmentDo newAppointment = newAppointments.get(i);
+
+                for (int j = 0; j < oldAppointments.size(); j++) {
+                    if (oldAppointments.get(j).getId() == newAppointment.getId()) {
+                        if (oldAppointments.get(j).getStatus() == newAppointment.getStatus()) {
+                            isFoundInOldOne = true;
+                            break;
+                        }
+                    }
+                }
+                if (!isFoundInOldOne) {
+                    anyNewAppointment = true;
+                    showLocalNotification(newAppointment, true);
+                    if (currentActivity != null) {
+                        showSnackBar(currentActivity, formNotificationMsgBasedOnStatusForDr(newAppointment));
+                    }
+                }
+            }
+        } else if (newAppointments != null) {
+            for (int i = 0; i < newAppointments.size(); i++) {
+                showLocalNotification(newAppointments.get(i), true);
+            }
+        }
+        LocalModel.getInstance().setAppointmentList(newAppointments);
+        if (anyNewAppointment) {
+            EventBus.getDefault().post(newAppointments);
         }
     }
 
@@ -322,7 +410,7 @@ public class MyApplication extends Application implements APICallback {
                 }
                 if (!isFoundInOldOne) {
                     anyNewAppointment = true;
-                    showLocalNotification(newAppointment);
+                    showLocalNotification(newAppointment, false);
                     if (currentActivity != null) {
                         showSnackBar(currentActivity, formNotificationMsgBasedOnStatus(newAppointment));
                     }
@@ -330,7 +418,7 @@ public class MyApplication extends Application implements APICallback {
             }
         } else if (newAppointments != null) {
             for (int i = 0; i < newAppointments.size(); i++) {
-                showLocalNotification(newAppointments.get(i));
+                showLocalNotification(newAppointments.get(i), false);
             }
         }
 
@@ -370,14 +458,23 @@ public class MyApplication extends Application implements APICallback {
     }
 
 
-    public void showLocalNotification(AppointmentDo appointmentDo) {
+    public void showLocalNotification(AppointmentDo appointmentDo, boolean isDr) {
         if (appointmentDo.getStatus() == AppointmentDo.STATUS_PENDING
                 || appointmentDo.getStatus() == AppointmentDo.STATUS_PROCESSED) {
             return;
         }
         String title = "Nagpur Doctors";
-        String description = formNotificationMsgBasedOnStatus(appointmentDo);
 
+        String description = "";
+        if (isDr) {
+            description = formNotificationMsgBasedOnStatusForDr(appointmentDo);
+        } else {
+            description = formNotificationMsgBasedOnStatus(appointmentDo);
+        }
+
+        if (description.trim().length() == 0) {
+            return;
+        }
 
         Intent intent = new Intent(MyApplication.getInstance(), SplashActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -408,12 +505,14 @@ public class MyApplication extends Application implements APICallback {
     }
 
     public void showSnackBar(Activity activity, String textToShow) {
-        Snackbar snack = Snackbar.make(activity.findViewById(android.R.id.content), textToShow, Snackbar.LENGTH_LONG);
-        View view = snack.getView();
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-        params.gravity = Gravity.TOP;
-        view.setLayoutParams(params);
-        snack.show();
+        if (textToShow != null && textToShow.length() > 0) {
+            Snackbar snack = Snackbar.make(activity.findViewById(android.R.id.content), textToShow, Snackbar.LENGTH_LONG);
+            View view = snack.getView();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            view.setLayoutParams(params);
+            snack.show();
+        }
     }
 
     public int generateRandomNum() {
@@ -438,6 +537,26 @@ public class MyApplication extends Application implements APICallback {
             case AppointmentDo.STATUS_PROCESSED:
                 msg = "Appointment of " + appointmentDo.getDr_name() + " has been already processed. Thanks.";
                 break;
+        }
+        return msg;
+    }
+
+    private String formNotificationMsgBasedOnStatusForDr(AppointmentDo appointmentDo) {
+        String msg = "";
+        switch (appointmentDo.getStatus()) {
+            case AppointmentDo.STATUS_PENDING:
+                msg = "You got a new Appointment request from " + appointmentDo.getPatient_name()
+                        + " of dated " + appointmentDo.getDate_time() + ". Please take action.";
+                break;
+//            case AppointmentDo.STATUS_APPROVED:
+//                msg = "Congrats your Appointment of " + appointmentDo.getDr_name() + " has been approved. Please be present on " + appointmentDo.getDate_time();
+//                break;
+//            case AppointmentDo.STATUS_CANCELLED:
+//                msg = "Sorry your Appointment of " + appointmentDo.getDr_name() + " has been cancelled. Please try to take new appointment or contact doctor";
+//                break;
+//            case AppointmentDo.STATUS_PROCESSED:
+//                msg = "Appointment of " + appointmentDo.getDr_name() + " has been already processed. Thanks.";
+//                break;
         }
         return msg;
     }

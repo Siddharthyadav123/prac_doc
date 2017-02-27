@@ -24,5 +24,9 @@ public class URLConstants {
 
     public static final String URL_GET_APPOINTMENT_LIST = BASE_URL + "api/user/{user_id}/appointments";
 
+    public static final String URL_POST_DR_SIGNIN = BASE_URL + "api/dr/login";
+
+    public static final String URL_GET_DR_APPOINTMENT_LIST = BASE_URL + "api/dr/{dr_id}/appointments";
+
 
 }

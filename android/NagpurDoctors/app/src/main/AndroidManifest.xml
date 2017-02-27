@@ -53,6 +53,11 @@
             android:name=".screens.HomeScreenActivity"
             android:label="@string/title_activity_home_screen"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".screens.DrHomeScreenActivity"
+            android:label="@string/title_activity_home_screen"
+            android:theme="@style/AppTheme" />
         <activity android:name=".screens.DrListActivity" />
         <activity android:name=".screens.DrProfileActivity" />
 

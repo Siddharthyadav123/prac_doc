@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sidproj.nagpurdrs.R;
+import com.sidproj.nagpurdrs.entities.DoctorLoginProfileDo;
 import com.sidproj.nagpurdrs.entities.UserProfileDo;
 import com.sidproj.nagpurdrs.model.LocalModel;
 
@@ -40,12 +41,16 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 UserProfileDo userProfileDo = LocalModel.getInstance().loadUserProfileIfExist(SplashActivity.this);
+                DoctorLoginProfileDo doctorLoginProfileDo = LocalModel.getInstance().loadDrProfileIfExist(SplashActivity.this);
                 finish();
-                if (userProfileDo == null) {
-                    Intent i = new Intent(SplashActivity.this, LoginFlowActivity.class);
+                if (userProfileDo != null) {
+                    Intent i = new Intent(SplashActivity.this, HomeScreenActivity.class);
+                    startActivity(i);
+                } else if (doctorLoginProfileDo != null) {
+                    Intent i = new Intent(SplashActivity.this, DrHomeScreenActivity.class);
                     startActivity(i);
                 } else {
-                    Intent i = new Intent(SplashActivity.this, HomeScreenActivity.class);
+                    Intent i = new Intent(SplashActivity.this, LoginFlowActivity.class);
                     startActivity(i);
                 }
 

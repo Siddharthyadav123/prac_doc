@@ -20,7 +20,9 @@ import com.google.gson.GsonBuilder;
 import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.constants.RequestConstant;
 import com.sidproj.nagpurdrs.constants.URLConstants;
+import com.sidproj.nagpurdrs.dailogs.DoctorSignupDetailDailog;
 import com.sidproj.nagpurdrs.entities.AppointmentDo;
+import com.sidproj.nagpurdrs.entities.DoctorLoginProfileDo;
 import com.sidproj.nagpurdrs.entities.UserProfileDo;
 import com.sidproj.nagpurdrs.model.LocalModel;
 import com.sidproj.nagpurdrs.volly.APIHandler;
@@ -40,6 +42,7 @@ public class LoginFlowActivity extends BaseActivity {
     private Button drLoginBtn;
     private Button patientLoginBtn;
     private TextView signUpTextView;
+    private TextView signUpDrTextView;
 
 
     //login form views
@@ -69,6 +72,7 @@ public class LoginFlowActivity extends BaseActivity {
         drLoginBtn = (Button) findViewById(R.id.drLoginBtn);
         patientLoginBtn = (Button) findViewById(R.id.patientLoginBtn);
         signUpTextView = (TextView) findViewById(R.id.signUpTextView);
+        signUpDrTextView = (TextView) findViewById(R.id.signUpDrTextView);
 
         loginOptionBtnContainer = (LinearLayout) findViewById(R.id.loginOptionBtnContainer);
         loginFormContainer = (LinearLayout) findViewById(R.id.loginFormContainer);
@@ -118,6 +122,14 @@ public class LoginFlowActivity extends BaseActivity {
                 }
             }
         });
+
+        signUpDrTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DoctorSignupDetailDailog doctorSignupDetailDailog = new DoctorSignupDetailDailog(LoginFlowActivity.this);
+                doctorSignupDetailDailog.show();
+            }
+        });
     }
 
     private void requestSignIn() {
@@ -130,9 +142,16 @@ public class LoginFlowActivity extends BaseActivity {
         }
 
 
-        APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_USER_SIGNIN, Request.Method.POST, URLConstants.URL_POST_USER_SIGNIN
-                , true, "Please wait while signing in...", jsonObject.toString());
-        apiHandler.requestAPI();
+        if (!isDoctorLogin) {
+            APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_USER_SIGNIN, Request.Method.POST, URLConstants.URL_POST_USER_SIGNIN
+                    , true, "Please wait while signing in...", jsonObject.toString());
+            apiHandler.requestAPI();
+        } else {
+            APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_DR_SIGNIN, Request.Method.POST,
+                    URLConstants.URL_POST_DR_SIGNIN, true, "Please wait while signing in...", jsonObject.toString());
+            apiHandler.requestAPI();
+        }
+
     }
 
     private boolean isValid() {
@@ -199,11 +218,18 @@ public class LoginFlowActivity extends BaseActivity {
                     })
                     .create();
 
-            UserProfileDo userProfileDo = gson.fromJson(response, UserProfileDo.class);
-            LocalModel.getInstance().saveUserProfile(this, userProfileDo);
-            Intent i = new Intent(LoginFlowActivity.this, HomeScreenActivity.class);
-            startActivity(i);
 
+            if (!isDoctorLogin) {
+                UserProfileDo userProfileDo = gson.fromJson(response, UserProfileDo.class);
+                LocalModel.getInstance().saveUserProfile(this, userProfileDo);
+                Intent i = new Intent(LoginFlowActivity.this, HomeScreenActivity.class);
+                startActivity(i);
+            } else {
+                DoctorLoginProfileDo doctorLoginProfileDo = gson.fromJson(response, DoctorLoginProfileDo.class);
+                LocalModel.getInstance().saveDoctorProfile(this, doctorLoginProfileDo);
+                Intent i = new Intent(LoginFlowActivity.this, DrHomeScreenActivity.class);
+                startActivity(i);
+            }
             finish();
         }
     }

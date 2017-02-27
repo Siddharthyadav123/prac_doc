@@ -49,7 +49,6 @@ public class AppointmentListActivity extends BaseActivity implements View.OnClic
         mTVCompleted = (TextView) findViewById(R.id.tv_completed);
         mTVCancelled = (TextView) findViewById(R.id.tv_cancelled);
         mTVMsg = (TextView) findViewById(R.id.tv_msg);
-
         mLVAppointment = (ListView) findViewById(R.id.lv_appointments);
     }
 
