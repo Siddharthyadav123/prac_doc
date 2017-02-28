@@ -14,7 +14,7 @@ public class LocalModel {
     public static LocalModel instance = null;
     private UserProfileDo userProfileDo = null;
     private DoctorLoginProfileDo doctorLoginProfileDo = null;
-
+    private boolean isDoctorLogin = false;
 
     private ArrayList<AppointmentDo> appointmentList = new ArrayList<>();
 
@@ -99,4 +99,11 @@ public class LocalModel {
         return doctorLoginProfileDo;
     }
 
+    public boolean isDoctorLogin() {
+        return isDoctorLogin;
+    }
+
+    public void setDoctorLogin(boolean doctorLogin) {
+        isDoctorLogin = doctorLogin;
+    }
 }

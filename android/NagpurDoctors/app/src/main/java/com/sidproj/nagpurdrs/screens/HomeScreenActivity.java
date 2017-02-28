@@ -50,6 +50,7 @@ public class HomeScreenActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        LocalModel.getInstance().setDoctorLogin(false);
         userProfileDo = LocalModel.getInstance().getUserProfileDo();
         setupActionBar(false, "Nagpur Doctors");
         setupNavigationDrawer();
@@ -122,7 +123,7 @@ public class HomeScreenActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            moveTaskToBack(true);
         }
     }
 

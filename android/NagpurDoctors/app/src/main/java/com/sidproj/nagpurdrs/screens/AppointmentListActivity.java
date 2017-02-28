@@ -30,6 +30,7 @@ public class AppointmentListActivity extends BaseActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSelectedTap = getIntent().getIntExtra("tab_selection", TAP_PENDING);
         setContentView(R.layout.activity_appointment_list);
         setupActionBar(true, "Your Appointments");
         initViews();

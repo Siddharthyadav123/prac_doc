@@ -98,7 +98,7 @@ public abstract class BaseActivity extends AppCompatActivity implements APICallb
     }
 
     @Subscribe
-    public void onCameraEvent(ArrayList<AppointmentDo> newAppointements) {
+    public void onNewAppointmentEvent(ArrayList<AppointmentDo> newAppointements) {
         notificationCount.setText(newAppointements.size() + "");
         onNewNotificationArrived(newAppointements);
     }

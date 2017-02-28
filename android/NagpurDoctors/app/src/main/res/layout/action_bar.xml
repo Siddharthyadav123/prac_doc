@@ -35,8 +35,8 @@
 
         <ImageView
             android:id="@+id/notificationImageView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
@@ -44,15 +44,17 @@
 
         <TextView
             android:id="@+id/notificationCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/notificationImageView"
-            android:layout_alignTop="@+id/notificationImageView"
-            android:background="@color/TheamLightColor"
-            android:padding="2dp"
-            android:text=" 0 "
+            android:layout_width="50dp"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:paddingTop="13dp"
+            android:text="0"
             android:textColor="@color/White"
-            android:textSize="7dp" />
+            android:textSize="11dp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <View
