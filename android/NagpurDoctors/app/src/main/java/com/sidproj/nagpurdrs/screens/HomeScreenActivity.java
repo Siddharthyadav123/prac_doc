@@ -60,7 +60,7 @@ public class HomeScreenActivity extends BaseActivity
         requestDrSpecialization();
         setInfoInUI();
         MyApplication.getInstance().enableGPS(this);
-        MyApplication.getInstance().requestPatientNotification();
+        MyApplication.getInstance().requestPatientNotification(false);
     }
 
     @Override

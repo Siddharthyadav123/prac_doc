@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.entities.AppointmentDo;
 import com.sidproj.nagpurdrs.model.LocalModel;
+import com.sidproj.nagpurdrs.screens.AppointmentListActivity;
 
 import java.util.ArrayList;
 
@@ -181,18 +182,18 @@ public class AppointmentListAdapter extends BaseAdapter {
     }
 
     private void onPatientCancelClick(AppointmentDo appointmentDo) {
-
+        ((AppointmentListActivity) context).requestAppointmentUpdate(appointmentDo, AppointmentListActivity.TAP_CANCELLED);
     }
 
     private void onDrCompletedClick(AppointmentDo appointmentDo) {
-
+        ((AppointmentListActivity) context).requestAppointmentUpdate(appointmentDo, AppointmentListActivity.TAP_COMPLETED);
     }
 
     private void onDrCancelClick(AppointmentDo appointmentDo) {
-
+        ((AppointmentListActivity) context).requestAppointmentUpdate(appointmentDo, AppointmentListActivity.TAP_CANCELLED);
     }
 
     private void onDrApproveClick(AppointmentDo appointmentDo) {
-
+        ((AppointmentListActivity) context).requestAppointmentUpdate(appointmentDo, AppointmentListActivity.TAP_APPROVED);
     }
 }

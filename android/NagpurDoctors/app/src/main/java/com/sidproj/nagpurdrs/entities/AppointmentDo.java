@@ -1,5 +1,7 @@
 package com.sidproj.nagpurdrs.entities;
 
+import org.json.JSONObject;
+
 /**
  * Created by siddharth on 2/1/2017.
  */
@@ -73,5 +75,23 @@ public class AppointmentDo {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+
+    public String formAppointmentRequestBody(int status) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("id", id);
+            jsonObject.put("patient_id", patient_id);
+            jsonObject.put("patient_name", patient_name);
+            jsonObject.put("dr_id", dr_id);
+            jsonObject.put("dr_name", dr_name);
+            jsonObject.put("date_time", date_time);
+            jsonObject.put("status", status);
+            return jsonObject.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

@@ -17,4 +17,6 @@ public class RequestConstant {
     public static final int REQUEST_DR_SIGNIN = 7;
 
     public static final int REQUEST_GET_DR_APPOINTMENT_LIST = 8;
+
+    public static final int REQUEST_PUT_DR_APPOINTMENT_UPDATE = 9;
 }

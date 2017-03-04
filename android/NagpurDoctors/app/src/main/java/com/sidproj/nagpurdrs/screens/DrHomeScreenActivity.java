@@ -54,15 +54,10 @@ public class DrHomeScreenActivity extends BaseActivity
         registerEvents();
         setInfoInUI();
         MyApplication.getInstance().enableGPS(this);
-        MyApplication.getInstance().requestDrNotification();
+        MyApplication.getInstance().requestDrNotification(false);
         updateAppointmentCounter();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        MyApplication.getInstance().setCurrentActivity(this);
-    }
 
     private void updateAppointmentCounter() {
         int pending = 0;

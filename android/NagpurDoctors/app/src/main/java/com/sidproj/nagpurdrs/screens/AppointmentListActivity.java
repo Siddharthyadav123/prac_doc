@@ -1,14 +1,21 @@
 package com.sidproj.nagpurdrs.screens;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.adapters.AppointmentListAdapter;
+import com.sidproj.nagpurdrs.application.MyApplication;
+import com.sidproj.nagpurdrs.constants.RequestConstant;
+import com.sidproj.nagpurdrs.constants.URLConstants;
 import com.sidproj.nagpurdrs.entities.AppointmentDo;
 import com.sidproj.nagpurdrs.model.LocalModel;
+import com.sidproj.nagpurdrs.volly.APIHandler;
 
 import java.util.ArrayList;
 
@@ -62,6 +69,19 @@ public class AppointmentListActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onAPIResponse(int requestId, boolean isSuccess, String response, String errorString) {
+        switch (requestId) {
+            case RequestConstant.REQUEST_PUT_DR_APPOINTMENT_UPDATE:
+                Toast.makeText(this, errorString, Toast.LENGTH_LONG).show();
+
+                boolean isDocLogin = LocalModel.getInstance().isDoctorLogin();
+                if (isDocLogin) {
+                    MyApplication.getInstance().requestDrNotification(true);
+                } else {
+                    MyApplication.getInstance().requestPatientNotification(true);
+                }
+
+                break;
+        }
 
     }
 
@@ -101,6 +121,13 @@ public class AppointmentListActivity extends BaseActivity implements View.OnClic
             setEmptyMsg();
             refreshAdapter(null);
         }
+    }
+
+    public void requestAppointmentUpdate(AppointmentDo appointmentDo, int newStatus) {
+        String url = URLConstants.URL_PUT_DR_APPOINTMENT_UPDATE;
+        APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_PUT_DR_APPOINTMENT_UPDATE,
+                Request.Method.PUT, url, true, "Updating Appointment...", appointmentDo.formAppointmentRequestBody(newStatus));
+        apiHandler.requestAPI();
     }
 
     private void refreshAdapter(ArrayList<AppointmentDo> appointmentList) {
@@ -169,4 +196,6 @@ public class AppointmentListActivity extends BaseActivity implements View.OnClic
                 break;
         }
     }
+
+
 }

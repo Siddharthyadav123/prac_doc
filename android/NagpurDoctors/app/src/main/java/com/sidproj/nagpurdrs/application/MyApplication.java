@@ -85,38 +85,40 @@ public class MyApplication extends Application implements APICallback {
 
     }
 
-    public void requestPatientNotification() {
+    public void requestPatientNotification(boolean needLoading) {
         userProfileDo = LocalModel.getInstance().getUserProfileDo();
 
         if (userProfileDo != null) {
             String url = URLConstants.URL_GET_APPOINTMENT_LIST;
             url = url.replace("{user_id}", userProfileDo.getId() + "");
             APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_GET_APPOINTMENT_LIST,
-                    Request.Method.GET, url, false, "Loading Appointments...", null);
+                    Request.Method.GET, url, needLoading, "Refreshing Appointment List...", null);
             apiHandler.requestAPI();
 
             //this will keep on calling this method recursively after a time interval
             if (patientNotificationHandler == null)
                 patientNotificationHandler = new Handler();
 
+            patientNotificationHandler.removeCallbacks(patientNotificationRunnable);
             patientNotificationHandler.postDelayed(patientNotificationRunnable, 10000);
         }
     }
 
-    public void requestDrNotification() {
+    public void requestDrNotification(boolean needLoading) {
         doctorLoginProfileDo = LocalModel.getInstance().getDoctorLoginProfileDo();
 
         if (doctorLoginProfileDo != null) {
             String url = URLConstants.URL_GET_DR_APPOINTMENT_LIST;
             url = url.replace("{dr_id}", doctorLoginProfileDo.getId() + "");
             APIHandler apiHandler = new APIHandler(this, this, RequestConstant.REQUEST_GET_DR_APPOINTMENT_LIST,
-                    Request.Method.GET, url, false, "Loading Appointments...", null);
+                    Request.Method.GET, url, needLoading, "Refreshing Appointment List...", null);
             apiHandler.requestAPI();
 
             //this will keep on calling this method recursively after a time interval
             if (drNotificationHandler == null)
                 drNotificationHandler = new Handler();
 
+            drNotificationHandler.removeCallbacks(drNotificationRunnable);
             drNotificationHandler.postDelayed(drNotificationRunnable, 10000);
         }
     }
@@ -133,14 +135,14 @@ public class MyApplication extends Application implements APICallback {
     private Runnable patientNotificationRunnable = new Runnable() {
         @Override
         public void run() {
-            requestPatientNotification();
+            requestPatientNotification(false);
         }
     };
 
     private Runnable drNotificationRunnable = new Runnable() {
         @Override
         public void run() {
-            requestDrNotification();
+            requestDrNotification(false);
         }
     };
 

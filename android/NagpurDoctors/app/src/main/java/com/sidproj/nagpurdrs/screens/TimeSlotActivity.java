@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.sidproj.nagpurdrs.R;
+import com.sidproj.nagpurdrs.application.MyApplication;
 import com.sidproj.nagpurdrs.constants.RequestConstant;
 import com.sidproj.nagpurdrs.constants.URLConstants;
 import com.sidproj.nagpurdrs.entities.AppointmentDo;
@@ -186,6 +187,7 @@ public class TimeSlotActivity extends BaseActivity {
         if (isSuccess) {
             Toast.makeText(TimeSlotActivity.this, "Your Request for Appointment has been sent. " +
                     "you will also get the notification as soon as doctor confirms.", Toast.LENGTH_LONG).show();
+            MyApplication.getInstance().requestPatientNotification(true);
             finish();
         }
     }

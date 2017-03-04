@@ -59,7 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity implements APICallb
     @Override
     protected void onStop() {
         super.onStop();
-        MyApplication.getInstance().setCurrentActivity(null);
+//        MyApplication.getInstance().setCurrentActivity(null);
     }
 
     public void setupActionBar(boolean needBackBtn, String title) {
