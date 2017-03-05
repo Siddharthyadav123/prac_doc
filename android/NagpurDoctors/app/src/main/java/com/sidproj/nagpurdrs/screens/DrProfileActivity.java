@@ -103,7 +103,7 @@ public class DrProfileActivity extends BaseActivity {
         locateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (drProfileDo.getDr_clinic_lat() != null && drProfileDo.getDr_clinic_long() != null) {
+                if (drProfileDo.getDr_clinic_lat() != null && drProfileDo.getDr_clinic_lat().trim().length() > 0) {
                     float myLat = MyApplication.getInstance().locationModel.getLatitude();
                     float myLong = MyApplication.getInstance().locationModel.getLongitude();
 

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.application.MyApplication;
 import com.sidproj.nagpurdrs.constants.RequestConstant;
+import com.sidproj.nagpurdrs.dailogs.AboutUsDialog;
 import com.sidproj.nagpurdrs.entities.AppointmentDo;
 import com.sidproj.nagpurdrs.entities.DoctorLoginProfileDo;
 import com.sidproj.nagpurdrs.model.LocalModel;
@@ -181,6 +182,8 @@ public class DrHomeScreenActivity extends BaseActivity
                 startActivity(i);
                 return false;
             case R.id.aboutUs:
+                AboutUsDialog aboutUsDialog = new AboutUsDialog(this);
+                aboutUsDialog.show();
                 return false;
             case R.id.logout:
                 showLogoutDailog();
