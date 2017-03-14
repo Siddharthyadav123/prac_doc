@@ -56,6 +56,7 @@ public class DrHomeScreenActivity extends BaseActivity
         MyApplication.getInstance().enableGPS(this);
         MyApplication.getInstance().requestDrNotification(false);
         updateAppointmentCounter();
+        checkPermissions(REQUEST_MARSHMELLO_PERMISSIONS, mustPermissions, null);
     }
 
 

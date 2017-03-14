@@ -5,10 +5,10 @@ package com.sidproj.nagpurdrs.constants;
  */
 public class URLConstants {
     //home pc tomcat
-    public static final String BASE_URL = "http://192.168.1.102:8080/";
+//    public static final String BASE_URL = "http://192.168.1.102:8080/";
 
     //offic pc local
-    //public static final String BASE_URL = "http://172.16.1.110:8080/";
+    public static final String BASE_URL = "http://172.16.1.110:8080/";
 
 
     //Cloud server

@@ -1,12 +1,17 @@
 package com.sidproj.nagpurdrs.screens;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -14,6 +19,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sidproj.nagpurdrs.R;
 import com.sidproj.nagpurdrs.application.MyApplication;
@@ -61,6 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity implements APICallb
         super.onStop();
 //        MyApplication.getInstance().setCurrentActivity(null);
     }
+
 
     public void setupActionBar(boolean needBackBtn, String title) {
         // toolbar
@@ -145,5 +152,84 @@ public abstract class BaseActivity extends AppCompatActivity implements APICallb
         }
     }
 
+    /**
+     * -------------------------------------- Permission handling --------------------------------------
+     */
+    private int permissionRequestCode;
+    private Object extras;
+    public final int REQUEST_MARSHMELLO_PERMISSIONS = 222;
+    boolean haveAllPermissions = false;
 
+    public String[] mustPermissions =
+            {
+                    Manifest.permission.ACCESS_NETWORK_STATE,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.CALL_PHONE
+
+            };
+
+    private boolean havePermission(String permission) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(this, permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkPermissions(int requestCode, String[] permission, Object extras) {
+        this.permissionRequestCode = requestCode;
+        this.extras = extras;
+        ArrayList<String> permissionsStr = new ArrayList<>();
+
+        for (int i = 0; i < permission.length; i++) {
+            if (!havePermission(permission[i])) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission[i])) {
+                    Toast.makeText(this, "Please provide this permission.", Toast.LENGTH_LONG).show();
+                }
+                permissionsStr.add(permission[i]);
+            }
+        }
+
+        if (permissionsStr.size() > 0) {
+            String[] needTopermissionArray = permissionsStr.toArray(new String[permissionsStr.size()]);
+            ActivityCompat.requestPermissions(this, needTopermissionArray, requestCode);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == permissionRequestCode) {
+
+            if (grantResults.length >= 1) {
+                boolean anyDenied = false;
+                for (int i = 0; i < grantResults.length; i++) {
+                    // Check if the only required permission has been granted
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+//                        Toast.makeText(this, "PERMISSION OF " + permissions[i] + " IS GRANTED.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        anyDenied = true;
+//                        Toast.makeText(this, "PERMISSION OF " + permissions[i] + " IS DENIED.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                if (anyDenied) {
+                    haveAllPermissions = false;
+                } else {
+                    haveAllPermissions = true;
+                }
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
 }

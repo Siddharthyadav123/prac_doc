@@ -59,6 +59,7 @@ public class HomeScreenActivity extends BaseActivity
         showSpecializationListAdapter();
         requestDrSpecialization();
         setInfoInUI();
+        checkPermissions(REQUEST_MARSHMELLO_PERMISSIONS, mustPermissions, null);
         MyApplication.getInstance().enableGPS(this);
         MyApplication.getInstance().requestPatientNotification(false);
     }

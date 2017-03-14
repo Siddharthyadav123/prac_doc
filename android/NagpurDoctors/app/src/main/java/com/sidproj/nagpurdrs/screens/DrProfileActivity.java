@@ -65,6 +65,7 @@ public class DrProfileActivity extends BaseActivity {
         registerEvents();
         setDrInfoInUI();
         MyApplication.getInstance().enableGPS(this);
+        checkPermissions(REQUEST_MARSHMELLO_PERMISSIONS, mustPermissions, null);
     }
 
     @Override
@@ -106,7 +107,7 @@ public class DrProfileActivity extends BaseActivity {
                     float myLat = MyApplication.getInstance().locationModel.getLatitude();
                     float myLong = MyApplication.getInstance().locationModel.getLongitude();
 
-                    if (myLat == 0.0) {
+                    if (myLat != 0.0) {
                         float drLat = Float.parseFloat(drProfileDo.getDr_clinic_lat());
                         float drLong = Float.parseFloat(drProfileDo.getDr_clinic_long());
 
